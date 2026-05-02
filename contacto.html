@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoDocs — Contacto</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #0d3d2a;
+    --green-mid: #1a6645;
+    --green-bright: #2dba72;
+    --green-light: #a8f0c6;
+    --cream: #f5f0e8;
+    --white: #ffffff;
+    --dark: #0a1f14;
+    --text-muted: #6b8c79;
+    --accent: #e8f5ee;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--green-deep);
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 5%;
+    background: rgba(245,240,232,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(45,186,114,0.15);
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 900;
+    color: var(--green-deep); letter-spacing: -0.5px;
+    text-decoration: none;
+  }
+  .logo span { color: var(--green-bright); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--green-mid);
+    font-weight: 500; font-size: 0.95rem; transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--green-bright); }
+  .btn-nav {
+    background: var(--green-deep);
+    color: var(--white) !important;
+    padding: 0.6rem 1.4rem; border-radius: 50px;
+    transition: background 0.2s !important;
+  }
+  .btn-nav:hover { background: var(--green-bright) !important; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* PAGE HERO — dividido en 2 columnas */
+  .contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+  }
+
+  /* PANEL IZQUIERDO */
+  .contact-left {
+    background: var(--green-deep);
+    padding: 9rem 5% 5rem 5%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .contact-left::before {
+    content: '';
+    position: absolute; bottom: -20%; right: -20%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(45,186,114,0.15) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .contact-left::after {
+    content: '';
+    position: absolute; top: 10%; left: -10%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(168,240,198,0.06) 0%, transparent 65%);
+  }
+
+  .cl-label {
+    font-size: 0.8rem; text-transform: uppercase;
+    letter-spacing: 2px; color: var(--green-bright);
+    font-weight: 500; margin-bottom: 1rem;
+    animation: fadeUp 0.5s ease both;
+  }
+  .cl-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 3.5vw, 4rem);
+    font-weight: 900; color: var(--white);
+    line-height: 1.1; margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .cl-title em { font-style: normal; color: var(--green-bright); }
+  .cl-sub {
+    color: var(--green-light); font-size: 1rem;
+    line-height: 1.7; font-weight: 300;
+    opacity: 0.85; max-width: 400px;
+    animation: fadeUp 0.6s 0.2s ease both;
+    margin-bottom: 3rem;
+  }
+
+  .contact-info { display: flex; flex-direction: column; gap: 1.5rem; animation: fadeUp 0.6s 0.3s ease both; }
+  .ci-item {
+    display: flex; align-items: flex-start; gap: 1rem;
+  }
+  .ci-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: rgba(45,186,114,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+    border: 1px solid rgba(45,186,114,0.25);
+  }
+  .ci-label { font-size: 0.78rem; color: var(--green-light); opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
+  .ci-value { color: var(--white); font-size: 0.95rem; font-weight: 400; }
+
+  .social-row {
+    display: flex; gap: 1rem; margin-top: 3rem;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .social-btn {
+    width: 44px; height: 44px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+    cursor: pointer;
+  }
+  .social-btn:hover { background: var(--green-bright); transform: translateY(-2px); }
+
+  /* PANEL DERECHO — FORMULARIO */
+  .contact-right {
+    background: var(--cream);
+    padding: 9rem 5% 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .form-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 900;
+    color: var(--green-deep);
+    margin-bottom: 0.5rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .form-sub {
+    color: var(--text-muted); font-size: 0.95rem;
+    font-weight: 300; margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .contact-form { animation: fadeUp 0.6s 0.2s ease both; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.2rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.2rem; }
+  .form-group.full { grid-column: 1 / -1; }
+
+  label {
+    font-size: 0.82rem; font-weight: 500;
+    color: var(--green-mid);
+    text-transform: uppercase; letter-spacing: 0.8px;
+  }
+
+  input, select, textarea {
+    background: var(--white);
+    border: 1.5px solid rgba(45,186,114,0.2);
+    border-radius: 12px;
+    padding: 0.85rem 1.1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--green-deep);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--green-bright);
+    box-shadow: 0 0 0 3px rgba(45,186,114,0.1);
+  }
+  input::placeholder, textarea::placeholder { color: #b0c4b8; }
+  select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%232dba72' d='M1 1l5 5 5-5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; }
+  textarea { resize: vertical; min-height: 120px; }
+
+  .motivo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.7rem;
+    margin-bottom: 1.2rem;
+  }
+  .motivo-opt {
+    position: relative;
+  }
+  .motivo-opt input[type="radio"] { display: none; }
+  .motivo-opt label {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.75rem 1rem;
+    background: var(--white);
+    border: 1.5px solid rgba(45,186,114,0.2);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.88rem;
+    text-transform: none; letter-spacing: 0;
+    color: var(--text-muted);
+    transition: all 0.2s;
+    font-weight: 400;
+  }
+  .motivo-opt input[type="radio"]:checked + label {
+    border-color: var(--green-bright);
+    background: var(--accent);
+    color: var(--green-deep);
+    font-weight: 500;
+  }
+  .motivo-opt label:hover { border-color: var(--green-bright); }
+
+  .btn-submit {
+    width: 100%;
+    background: var(--green-deep);
+    color: var(--white);
+    padding: 1rem;
+    border-radius: 50px;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem; font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 20px rgba(13,61,42,0.2);
+    letter-spacing: 0.3px;
+  }
+  .btn-submit:hover { background: var(--green-bright); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(45,186,114,0.3); }
+  .btn-submit:active { transform: translateY(0); }
+
+  .form-note {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 1rem;
+    font-weight: 300;
+  }
+
+  /* SUCCESS STATE */
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 3rem 2rem;
+    animation: fadeUp 0.5s ease both;
+  }
+  .success-icon { font-size: 4rem; margin-bottom: 1rem; }
+  .success-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; font-weight: 900;
+    color: var(--green-deep);
+    margin-bottom: 0.8rem;
+  }
+  .success-sub { color: var(--text-muted); font-size: 1rem; font-weight: 300; line-height: 1.6; }
+
+  /* ALTERNATIVAS */
+  .alternativas {
+    background: var(--white);
+    padding: 5rem 5%;
+  }
+  .alt-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+  .alt-card {
+    background: var(--cream);
+    border-radius: 20px;
+    padding: 2rem;
+    border: 1px solid rgba(45,186,114,0.1);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .alt-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(13,61,42,0.08); }
+  .alt-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .alt-title { font-weight: 700; color: var(--green-deep); margin-bottom: 0.5rem; font-size: 1rem; }
+  .alt-desc { font-size: 0.88rem; color: var(--text-muted); font-weight: 300; line-height: 1.6; margin-bottom: 1.2rem; }
+  .alt-link {
+    display: inline-block;
+    color: var(--green-bright);
+    font-size: 0.9rem; font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(45,186,114,0.3);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .alt-link:hover { color: var(--green-deep); border-color: var(--green-deep); }
+
+  .section-label {
+    font-size: 0.8rem; text-transform: uppercase;
+    letter-spacing: 2px; color: var(--green-bright);
+    font-weight: 500; margin-bottom: 0.8rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 900; color: var(--green-deep);
+    line-height: 1.15;
+  }
+
+  /* MAPA FICTICIO */
+  .map-band {
+    background: var(--green-deep);
+    padding: 4rem 5%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .map-info .section-title { color: var(--white); }
+  .map-info .section-label { color: var(--green-light); opacity: 0.7; }
+  .map-info p { color: var(--green-light); font-size: 0.95rem; font-weight: 300; line-height: 1.7; margin-top: 1rem; opacity: 0.8; }
+
+  .map-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    display: flex; flex-direction: column; gap: 1.2rem;
+  }
+  .map-row { display: flex; align-items: center; gap: 1rem; }
+  .map-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--green-bright); flex-shrink: 0;
+  }
+  .map-text-label { font-size: 0.78rem; color: var(--green-light); opacity: 0.6; }
+  .map-text-val { font-size: 0.95rem; color: var(--white); }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    padding: 4rem 5% 2rem;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-brand .logo { color: var(--white); display: block; margin-bottom: 0.8rem; }
+  .footer-desc { color: rgba(255,255,255,0.4); font-size: 0.9rem; line-height: 1.6; font-weight: 300; }
+  .footer-col-title { color: var(--green-light); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 500; margin-bottom: 1rem; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .footer-links a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--green-bright); }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 2rem; color: rgba(255,255,255,0.25); font-size: 0.85rem;
+  }
+
+  @media (max-width: 900px) {
+    .contact-layout { grid-template-columns: 1fr; }
+    .contact-left { padding: 8rem 5% 4rem; }
+    .alt-grid { grid-template-columns: 1fr; }
+    .map-band { grid-template-columns: 1fr; gap: 2rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .motivo-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    nav .nav-links li:not(:last-child) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Eco<span>Docs</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#como-funciona">Cómo funciona</a></li>
+    <li><a href="index.html#funcionalidades">Funcionalidades</a></li>
+    <li><a href="index.html#precios">Precios</a></li>
+    <li><a href="nosotros.html">Nosotros</a></li>
+    <li><a href="contacto.html" class="btn-nav active">Contacto</a></li>
+  </ul>
+</nav>
+
+<div class="contact-layout">
+
+  <!-- PANEL IZQUIERDO -->
+  <div class="contact-left">
+    <div class="cl-label">Hablemos</div>
+    <h1 class="cl-title">¿Listo para decirle <em>adiós al papel?</em></h1>
+    <p class="cl-sub">Cuéntanos sobre tu empresa y te mostramos cómo EcoDocs puede transformar tu operación. Sin compromiso, sin presión.</p>
+
+    <div class="contact-info">
+      <div class="ci-item">
+        <div class="ci-icon">📧</div>
+        <div>
+          <div class="ci-label">Email</div>
+          <div class="ci-value">hola@ecodocs.do</div>
+        </div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-icon">📞</div>
+        <div>
+          <div class="ci-label">Teléfono / WhatsApp</div>
+          <div class="ci-value">+1 (809) 555-0192</div>
+        </div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-icon">📍</div>
+        <div>
+          <div class="ci-label">Oficina principal</div>
+          <div class="ci-value">Av. Winston Churchill, Torre Empresarial, Piso 8. Santo Domingo, RD.</div>
+        </div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-icon">⏰</div>
+        <div>
+          <div class="ci-label">Horario de atención</div>
+          <div class="ci-value">Lun – Vie · 8:00 AM – 6:00 PM (AST)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="social-row">
+      <a class="social-btn" title="LinkedIn">💼</a>
+      <a class="social-btn" title="Twitter/X">𝕏</a>
+      <a class="social-btn" title="Instagram">📸</a>
+      <a class="social-btn" title="WhatsApp">💬</a>
+    </div>
+  </div>
+
+  <!-- PANEL DERECHO -->
+  <div class="contact-right">
+
+    <div id="formWrapper">
+      <div class="form-title">Escríbenos</div>
+      <p class="form-sub">Te respondemos en menos de 24 horas hábiles.</p>
+
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" placeholder="Tu nombre" required>
+          </div>
+          <div class="form-group">
+            <label for="apellido">Apellido</label>
+            <input type="text" id="apellido" placeholder="Tu apellido" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Correo electrónico</label>
+            <input type="email" id="email" placeholder="tu@empresa.com" required>
+          </div>
+          <div class="form-group">
+            <label for="telefono">Teléfono (opcional)</label>
+            <input type="tel" id="telefono" placeholder="+1 (809) 000-0000">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="empresa">Nombre de la empresa</label>
+          <input type="text" id="empresa" placeholder="Mi Empresa S.R.L." required>
+        </div>
+
+        <div class="form-group">
+          <label for="tamano">Tamaño de la empresa</label>
+          <select id="tamano" required>
+            <option value="" disabled selected>Selecciona una opción</option>
+            <option value="1-10">1 – 10 empleados</option>
+            <option value="11-50">11 – 50 empleados</option>
+            <option value="51-200">51 – 200 empleados</option>
+            <option value="200+">Más de 200 empleados</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>¿En qué te podemos ayudar?</label>
+          <div class="motivo-grid">
+            <div class="motivo-opt">
+              <input type="radio" name="motivo" id="m1" value="demo" checked>
+              <label for="m1">🎯 Solicitar una demo</label>
+            </div>
+            <div class="motivo-opt">
+              <input type="radio" name="motivo" id="m2" value="precio">
+              <label for="m2">💰 Preguntas sobre precios</label>
+            </div>
+            <div class="motivo-opt">
+              <input type="radio" name="motivo" id="m3" value="soporte">
+              <label for="m3">🛠️ Soporte técnico</label>
+            </div>
+            <div class="motivo-opt">
+              <input type="radio" name="motivo" id="m4" value="otro">
+              <label for="m4">💬 Otro tema</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="mensaje">Mensaje</label>
+          <textarea id="mensaje" placeholder="Cuéntanos un poco sobre tu empresa y qué documentos manejas actualmente..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Enviar mensaje →</button>
+        <p class="form-note">🔒 Tu información está protegida. No enviamos spam.</p>
+      </form>
+    </div>
+
+    <div class="success-msg" id="successMsg">
+      <div class="success-icon">🌱</div>
+      <div class="success-title">¡Mensaje enviado!</div>
+      <p class="success-sub">Gracias por contactarnos. Un miembro de nuestro equipo se comunicará contigo en menos de 24 horas hábiles.<br><br>Mientras tanto, puedes explorar nuestra plataforma o leer sobre nuestros casos de éxito.</p>
+      <br>
+      <a href="index.html" style="display:inline-block;margin-top:1rem;background:var(--green-deep);color:var(--white);padding:0.85rem 2rem;border-radius:50px;text-decoration:none;font-weight:500;transition:all 0.2s">Volver al inicio →</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ALTERNATIVAS DE CONTACTO -->
+<section class="alternativas">
+  <div class="section-label">Otras formas de conectar</div>
+  <h2 class="section-title">Elige cómo prefieres<br>que te contactemos</h2>
+  <div class="alt-grid">
+    <div class="alt-card">
+      <div class="alt-icon">📅</div>
+      <div class="alt-title">Agenda una demo en vivo</div>
+      <div class="alt-desc">Reserva 30 minutos con uno de nuestros especialistas y ve EcoDocs en acción con casos reales de tu industria.</div>
+      <a href="#" class="alt-link">Ver disponibilidad →</a>
+    </div>
+    <div class="alt-card">
+      <div class="alt-icon">💬</div>
+      <div class="alt-title">Chat en vivo por WhatsApp</div>
+      <div class="alt-desc">¿Tienes una duda rápida? Escríbenos directamente por WhatsApp y te respondemos al momento en horario laboral.</div>
+      <a href="#" class="alt-link">Abrir chat →</a>
+    </div>
+    <div class="alt-card">
+      <div class="alt-icon">📚</div>
+      <div class="alt-title">Centro de ayuda</div>
+      <div class="alt-desc">Encuentra respuestas a las preguntas más frecuentes, tutoriales y guías de implementación paso a paso.</div>
+      <a href="#" class="alt-link">Ir al centro de ayuda →</a>
+    </div>
+  </div>
+</section>
+
+<!-- UBICACIÓN -->
+<section class="map-band">
+  <div class="map-info">
+    <div class="section-label">Encuéntranos</div>
+    <h2 class="section-title">Nuestra oficina</h2>
+    <p>Estamos ubicados en el corazón empresarial de Santo Domingo. Si prefieres una reunión presencial, con gusto te recibimos con el café listo. ☕</p>
+  </div>
+  <div class="map-card">
+    <div class="map-row">
+      <div class="map-dot"></div>
+      <div>
+        <div class="map-text-label">Dirección</div>
+        <div class="map-text-val">Av. Winston Churchill, Torre Empresarial, Piso 8</div>
+      </div>
+    </div>
+    <div class="map-row">
+      <div class="map-dot"></div>
+      <div>
+        <div class="map-text-label">Ciudad</div>
+        <div class="map-text-val">Santo Domingo, República Dominicana</div>
+      </div>
+    </div>
+    <div class="map-row">
+      <div class="map-dot"></div>
+      <div>
+        <div class="map-text-label">Horario de oficina</div>
+        <div class="map-text-val">Lunes a Viernes · 8:00 AM – 6:00 PM</div>
+      </div>
+    </div>
+    <div class="map-row">
+      <div class="map-dot"></div>
+      <div>
+        <div class="map-text-label">Parking</div>
+        <div class="map-text-val">Disponible en el edificio (menciona que visitas EcoDocs)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="logo">Eco<span>Docs</span></a>
+      <p class="footer-desc">Digitalizamos el papel de tu empresa para que puedas enfocarte en lo que importa: crecer.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Producto</div>
+      <ul class="footer-links">
+        <li><a href="index.html#funcionalidades">Funcionalidades</a></li>
+        <li><a href="index.html#precios">Precios</a></li>
+        <li><a href="#">Integraciones</a></li>
+        <li><a href="#">Seguridad</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Empresa</div>
+      <ul class="footer-links">
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Casos de éxito</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Legal</div>
+      <ul class="footer-links">
+        <li><a href="#">Privacidad</a></li>
+        <li><a href="#">Términos de uso</a></li>
+        <li><a href="#">Cookies</a></li>
+        <li><a href="#">Cumplimiento</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 EcoDocs. Todos los derechos reservados.</span>
+    <span>🌱 Por un mundo con menos papel</span>
+  </div>
+</footer>
+
+<script>
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.btn-submit');
+    btn.textContent = 'Enviando...';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      document.getElementById('formWrapper').style.display = 'none';
+      const msg = document.getElementById('successMsg');
+      msg.style.display = 'block';
+    }, 1200);
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.alt-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(25px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s';
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
