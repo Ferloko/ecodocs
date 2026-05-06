@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoDocs — Casos de Éxito</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #0d3d2a; --green-mid: #1a6645; --green-bright: #2dba72;
+    --green-light: #a8f0c6; --cream: #f5f0e8; --white: #ffffff;
+    --dark: #0a1f14; --text-muted: #6b8c79; --accent: #e8f5ee;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--green-deep); overflow-x:hidden; }
+
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:1.2rem 5%; background:rgba(245,240,232,0.92); backdrop-filter:blur(12px); border-bottom:1px solid rgba(45,186,114,0.15); }
+  .logo { font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:900; color:var(--green-deep); letter-spacing:-0.5px; text-decoration:none; }
+  .logo span { color:var(--green-bright); }
+  .nav-links { display:flex; gap:2.5rem; list-style:none; }
+  .nav-links a { text-decoration:none; color:var(--green-mid); font-weight:500; font-size:0.95rem; transition:color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color:var(--green-bright); }
+  .btn-nav { background:var(--green-deep); color:var(--white)!important; padding:0.6rem 1.4rem; border-radius:50px; }
+  .btn-nav:hover { background:var(--green-bright)!important; }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+
+  .page-hero { background:var(--green-deep); padding:9rem 5% 5rem; position:relative; overflow:hidden; }
+  .page-hero::before { content:''; position:absolute; bottom:-40%; right:-5%; width:600px; height:600px; background:radial-gradient(circle,rgba(45,186,114,0.12) 0%,transparent 65%); }
+  .hero-label { font-size:0.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--green-bright); font-weight:500; margin-bottom:1rem; animation:fadeUp 0.5s ease both; }
+  .page-hero h1 { font-family:'Playfair Display',serif; font-size:clamp(2.8rem,4.5vw,4.5rem); font-weight:900; color:var(--white); line-height:1.1; margin-bottom:1.2rem; animation:fadeUp 0.6s 0.1s ease both; }
+  .page-hero h1 em { font-style:normal; color:var(--green-bright); }
+  .page-hero p { color:var(--green-light); font-size:1.05rem; line-height:1.7; font-weight:300; opacity:0.85; max-width:600px; animation:fadeUp 0.6s 0.2s ease both; }
+
+  /* STATS BANNER */
+  .stats-band { background:var(--white); padding:3rem 5%; display:grid; grid-template-columns:repeat(4,1fr); gap:2rem; border-bottom:1px solid rgba(45,186,114,0.1); }
+  .sb-item { text-align:center; }
+  .sb-num { font-family:'Playfair Display',serif; font-size:3rem; font-weight:900; color:var(--green-bright); line-height:1; }
+  .sb-label { font-size:0.9rem; color:var(--text-muted); margin-top:0.4rem; font-weight:300; }
+
+  /* CASO FEATURED */
+  .featured-case { padding:5rem 5%; background:var(--cream); }
+  .section-label { font-size:0.8rem; text-transform:uppercase; letter-spacing:2px; color:var(--green-bright); font-weight:500; margin-bottom:0.8rem; }
+  .section-title { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,2.5vw,2.5rem); font-weight:900; color:var(--green-deep); line-height:1.15; margin-bottom:2.5rem; }
+
+  .case-card-big {
+    background:var(--white); border-radius:24px; overflow:hidden;
+    display:grid; grid-template-columns:1fr 1fr;
+    border:1px solid rgba(45,186,114,0.1);
+    box-shadow:0 10px 40px rgba(13,61,42,0.06);
+    transition:transform 0.3s, box-shadow 0.3s;
+  }
+  .case-card-big:hover { transform:translateY(-4px); box-shadow:0 20px 55px rgba(13,61,42,0.1); }
+
+  .case-visual {
+    background:linear-gradient(135deg,var(--green-deep),var(--green-mid));
+    padding:3rem; display:flex; flex-direction:column; justify-content:space-between;
+    position:relative; overflow:hidden; min-height:360px;
+  }
+  .case-visual::before { content:''; position:absolute; bottom:-20%; right:-15%; width:250px; height:250px; background:radial-gradient(circle,rgba(45,186,114,0.25) 0%,transparent 70%); }
+  .case-logo-box { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15); border-radius:14px; padding:1rem 1.5rem; display:inline-block; margin-bottom:1rem; }
+  .case-logo-name { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:900; color:var(--white); }
+  .case-logo-sub { font-size:0.8rem; color:var(--green-light); opacity:0.7; }
+  .case-industry { display:inline-block; background:rgba(45,186,114,0.2); border:1px solid rgba(45,186,114,0.3); color:var(--green-light); font-size:0.78rem; padding:4px 12px; border-radius:50px; margin-bottom:auto; }
+  .case-metrics { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .cm-item { background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:1rem; }
+  .cm-num { font-family:'Playfair Display',serif; font-size:2rem; font-weight:900; color:var(--green-bright); }
+  .cm-label { font-size:0.78rem; color:var(--green-light); opacity:0.75; margin-top:2px; }
+
+  .case-body { padding:3rem; display:flex; flex-direction:column; justify-content:center; }
+  .case-tag { display:inline-block; font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; font-weight:600; padding:3px 12px; border-radius:50px; background:#d4f4e2; color:var(--green-mid); margin-bottom:1rem; }
+  .case-body h2 { font-family:'Playfair Display',serif; font-size:1.7rem; font-weight:900; color:var(--green-deep); line-height:1.2; margin-bottom:1rem; }
+  .case-body .challenge { margin-bottom:1.2rem; }
+  .case-body .challenge-label { font-size:0.78rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); font-weight:600; margin-bottom:0.4rem; }
+  .case-body p { color:var(--text-muted); font-size:0.93rem; line-height:1.7; font-weight:300; }
+  .quote-block { margin:1.5rem 0; padding:1.2rem 1.5rem; border-left:3px solid var(--green-bright); background:var(--accent); border-radius:0 12px 12px 0; }
+  .quote-text { font-style:italic; color:var(--green-deep); font-size:0.93rem; line-height:1.6; margin-bottom:0.5rem; }
+  .quote-author { font-size:0.8rem; color:var(--text-muted); font-weight:500; }
+  .read-case { display:inline-flex; align-items:center; gap:0.5rem; margin-top:1.5rem; color:var(--green-bright); font-weight:600; font-size:0.9rem; text-decoration:none; transition:gap 0.2s; }
+  .read-case:hover { gap:0.9rem; color:var(--green-deep); }
+
+  /* CASES GRID */
+  .cases-grid-section { padding:4rem 5%; background:var(--white); }
+  .cases-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; }
+
+  .case-card {
+    background:var(--cream); border-radius:20px; overflow:hidden;
+    border:1px solid rgba(45,186,114,0.1);
+    transition:transform 0.3s, box-shadow 0.3s;
+    display:flex; flex-direction:column;
+  }
+  .case-card:hover { transform:translateY(-5px); box-shadow:0 20px 50px rgba(13,61,42,0.09); }
+
+  .cc-header { padding:1.8rem 1.8rem 1rem; border-bottom:1px solid rgba(45,186,114,0.08); }
+  .cc-industry { font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); font-weight:600; margin-bottom:0.5rem; }
+  .cc-company { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:900; color:var(--green-deep); margin-bottom:0.4rem; }
+  .cc-desc { font-size:0.85rem; color:var(--text-muted); font-weight:300; line-height:1.5; }
+
+  .cc-metrics { display:grid; grid-template-columns:1fr 1fr; gap:0; border-bottom:1px solid rgba(45,186,114,0.08); }
+  .cc-metric { padding:1rem 1.5rem; text-align:center; }
+  .cc-metric:first-child { border-right:1px solid rgba(45,186,114,0.08); }
+  .cc-metric-num { font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:900; color:var(--green-bright); line-height:1; }
+  .cc-metric-label { font-size:0.75rem; color:var(--text-muted); margin-top:3px; font-weight:300; }
+
+  .cc-quote { padding:1.5rem 1.8rem; flex:1; }
+  .cc-quote p { font-style:italic; font-size:0.88rem; color:var(--green-deep); line-height:1.6; font-weight:300; }
+  .cc-author { padding:0 1.8rem 1.5rem; display:flex; align-items:center; gap:0.8rem; }
+  .cc-avatar { width:36px; height:36px; border-radius:50%; background:var(--green-deep); display:flex; align-items:center; justify-content:center; color:var(--white); font-weight:700; font-size:0.8rem; flex-shrink:0; }
+  .cc-author-name { font-size:0.85rem; font-weight:600; color:var(--green-deep); }
+  .cc-author-role { font-size:0.78rem; color:var(--text-muted); }
+
+  /* INDUSTRIAS */
+  .industrias { padding:5rem 5%; background:var(--cream); }
+  .ind-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; margin-top:3rem; }
+  .ind-card { background:var(--white); border-radius:18px; padding:2rem 1.5rem; text-align:center; border:1px solid rgba(45,186,114,0.1); transition:all 0.3s; cursor:default; }
+  .ind-card:hover { background:var(--green-deep); transform:translateY(-4px); box-shadow:0 16px 40px rgba(13,61,42,0.12); }
+  .ind-icon { font-size:2.2rem; margin-bottom:0.8rem; display:block; }
+  .ind-name { font-weight:700; color:var(--green-deep); font-size:0.95rem; transition:color 0.3s; }
+  .ind-card:hover .ind-name { color:var(--white); }
+  .ind-count { font-size:0.78rem; color:var(--text-muted); margin-top:4px; transition:color 0.3s; }
+  .ind-card:hover .ind-count { color:var(--green-light); }
+
+  /* PROCESO */
+  .proceso { background:var(--green-deep); padding:5rem 5%; position:relative; overflow:hidden; }
+  .proceso::before { content:''; position:absolute; top:-30%; right:-5%; width:500px; height:500px; background:radial-gradient(circle,rgba(45,186,114,0.1) 0%,transparent 65%); }
+  .proceso .section-label { color:var(--green-light); opacity:0.7; }
+  .proceso .section-title { color:var(--white); margin-bottom:3rem; }
+  .proc-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; }
+  .proc-step { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:18px; padding:2rem 1.5rem; text-align:center; transition:background 0.3s, transform 0.3s; }
+  .proc-step:hover { background:rgba(255,255,255,0.1); transform:translateY(-4px); }
+  .proc-num { font-family:'Playfair Display',serif; font-size:3rem; font-weight:900; color:var(--green-bright); line-height:1; margin-bottom:0.5rem; }
+  .proc-title { font-weight:600; color:var(--white); margin-bottom:0.5rem; font-size:0.95rem; }
+  .proc-desc { font-size:0.83rem; color:var(--green-light); opacity:0.75; line-height:1.5; font-weight:300; }
+
+  /* CTA */
+  .cta-band { padding:5rem 5%; background:var(--white); text-align:center; }
+  .cta-band h2 { font-family:'Playfair Display',serif; font-size:clamp(2rem,3vw,3rem); font-weight:900; color:var(--green-deep); margin-bottom:1rem; }
+  .cta-band p { color:var(--text-muted); font-size:1rem; font-weight:300; max-width:480px; margin:0 auto 2rem; line-height:1.7; }
+  .cta-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+  .btn-primary { background:var(--green-deep); color:var(--white); padding:0.9rem 2.2rem; border-radius:50px; text-decoration:none; font-weight:500; font-size:1rem; transition:all 0.25s; box-shadow:0 4px 20px rgba(13,61,42,0.2); }
+  .btn-primary:hover { background:var(--green-bright); transform:translateY(-2px); }
+  .btn-outline { background:transparent; color:var(--green-deep); padding:0.9rem 2.2rem; border-radius:50px; text-decoration:none; font-weight:500; font-size:1rem; border:1.5px solid var(--green-deep); transition:all 0.25s; }
+  .btn-outline:hover { background:var(--green-deep); color:var(--white); transform:translateY(-2px); }
+
+  footer { background:var(--dark); padding:4rem 5% 2rem; }
+  .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:3rem; padding-bottom:3rem; border-bottom:1px solid rgba(255,255,255,0.06); }
+  .footer-brand .logo { color:var(--white); display:block; margin-bottom:0.8rem; }
+  .footer-desc { color:rgba(255,255,255,0.4); font-size:0.9rem; line-height:1.6; font-weight:300; }
+  .footer-col-title { color:var(--green-light); font-size:0.8rem; text-transform:uppercase; letter-spacing:1.5px; font-weight:500; margin-bottom:1rem; }
+  .footer-links { list-style:none; display:flex; flex-direction:column; gap:0.6rem; }
+  .footer-links a { color:rgba(255,255,255,0.45); text-decoration:none; font-size:0.9rem; transition:color 0.2s; }
+  .footer-links a:hover { color:var(--green-bright); }
+  .footer-bottom { display:flex; justify-content:space-between; align-items:center; padding-top:2rem; color:rgba(255,255,255,0.25); font-size:0.85rem; }
+
+  @media(max-width:900px){
+    .case-card-big{grid-template-columns:1fr}
+    .case-visual{min-height:auto;padding:2rem}
+    .cases-grid{grid-template-columns:1fr}
+    .ind-grid{grid-template-columns:repeat(2,1fr)}
+    .proc-grid{grid-template-columns:repeat(2,1fr)}
+    .stats-band{grid-template-columns:repeat(2,1fr)}
+    .footer-grid{grid-template-columns:1fr 1fr}
+    nav .nav-links li:not(:last-child){display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Eco<span>Docs</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#como-funciona">Cómo funciona</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="nosotros.html">Nosotros</a></li>
+    <li><a href="casos.html" class="active">Casos de éxito</a></li>
+    <li><a href="contacto.html" class="btn-nav">Contacto</a></li>
+  </ul>
+</nav>
+
+<section class="page-hero">
+  <div class="hero-label">Resultados reales</div>
+  <h1>Empresas que dijeron <em>adiós al papel</em> y no volvieron la vista atrás</h1>
+  <p>Historias concretas de empresas dominicanas y del Caribe que transformaron su operación con EcoDocs. Números reales, sin adornos.</p>
+</section>
+
+<div class="stats-band">
+  <div class="sb-item"><div class="sb-num">500+</div><div class="sb-label">Empresas en la plataforma</div></div>
+  <div class="sb-item"><div class="sb-num">98%</div><div class="sb-label">Satisfacción post-implementación</div></div>
+  <div class="sb-item"><div class="sb-num">30 días</div><div class="sb-label">Tiempo promedio de adopción total</div></div>
+  <div class="sb-item"><div class="sb-num">40%</div><div class="sb-label">Ahorro operativo promedio</div></div>
+</div>
+
+<!-- CASO DESTACADO -->
+<section class="featured-case">
+  <div class="section-label">✦ Caso destacado</div>
+  <div class="case-card-big">
+    <div class="case-visual">
+      <div>
+        <div class="case-logo-box">
+          <div class="case-logo-name">Grupo Nova</div>
+          <div class="case-logo-sub">Holding empresarial</div>
+        </div>
+        <br>
+        <span class="case-industry">🏢 Sector financiero · 280 empleados</span>
+      </div>
+      <div class="case-metrics">
+        <div class="cm-item"><div class="cm-num">95%</div><div class="cm-label">Reducción en uso de papel</div></div>
+        <div class="cm-item"><div class="cm-num">$14K</div><div class="cm-label">Ahorro mensual en operación</div></div>
+        <div class="cm-item"><div class="cm-num">3x</div><div class="cm-label">Más rápido cerrar contratos</div></div>
+        <div class="cm-item"><div class="cm-num">21 días</div><div class="cm-label">Para adopción completa</div></div>
+      </div>
+    </div>
+    <div class="case-body">
+      <span class="case-tag">Transformación completa</span>
+      <h2>Cómo Grupo Nova eliminó 45,000 hojas al mes y aceleró su ciclo de ventas</h2>
+      <div class="challenge">
+        <div class="challenge-label">El problema</div>
+        <p>Con 280 empleados en 4 oficinas, Grupo Nova manejaba contratos, facturas y reportes en papel que se perdían, tardaban semanas en ser aprobados y requerían un equipo dedicado solo a archivar.</p>
+      </div>
+      <div class="quote-block">
+        <div class="quote-text">"Antes perdíamos contratos físicamente. Una vez no pudimos probar un acuerdo en una auditoría porque el documento se extravió. Con EcoDocs eso es imposible."</div>
+        <div class="quote-author">— María Castillo, Gerente General, Grupo Nova</div>
+      </div>
+      <a href="#" class="read-case">Leer el caso completo →</a>
+    </div>
+  </div>
+</section>
+
+<!-- GRID CASOS -->
+<section class="cases-grid-section">
+  <h2 class="section-title">Más historias de éxito</h2>
+  <div class="cases-grid">
+
+    <div class="case-card">
+      <div class="cc-header">
+        <div class="cc-industry">⚖️ Sector legal</div>
+        <div class="cc-company">Bufete Jiménez & Asociados</div>
+        <div class="cc-desc">Firma de abogados con 40 profesionales y miles de expedientes físicos acumulados.</div>
+      </div>
+      <div class="cc-metrics">
+        <div class="cc-metric"><div class="cc-metric-num">70%</div><div class="cc-metric-label">Menos tiempo buscando expedientes</div></div>
+        <div class="cc-metric"><div class="cc-metric-num">$4.2K</div><div class="cc-metric-label">Ahorro mensual en papel e impresión</div></div>
+      </div>
+      <div class="cc-quote"><p>"Nuestros clientes nos piden documentos firmados en minutos. Antes eso tardaba días. EcoDocs cambió completamente nuestra propuesta de valor."</p></div>
+      <div class="cc-author">
+        <div class="cc-avatar">RJ</div>
+        <div><div class="cc-author-name">Roberto Jiménez</div><div class="cc-author-role">Director Legal</div></div>
+      </div>
+    </div>
+
+    <div class="case-card">
+      <div class="cc-header">
+        <div class="cc-industry">🏥 Sector salud</div>
+        <div class="cc-company">Clínica MediSur</div>
+        <div class="cc-desc">Red de 3 clínicas con expedientes médicos, recetas y consentimientos en papel.</div>
+      </div>
+      <div class="cc-metrics">
+        <div class="cc-metric"><div class="cc-metric-num">100%</div><div class="cc-metric-label">Expedientes digitalizados</div></div>
+        <div class="cc-metric"><div class="cc-metric-num">2 min</div><div class="cc-metric-label">Para encontrar cualquier expediente</div></div>
+      </div>
+      <div class="cc-quote"><p>"En salud, un expediente perdido puede costar una vida. Con EcoDocs tenemos acceso inmediato desde cualquier sede. Es una diferencia enorme."</p></div>
+      <div class="cc-author">
+        <div class="cc-avatar">LV</div>
+        <div><div class="cc-author-name">Dra. Laura Ventura</div><div class="cc-author-role">Directora Médica</div></div>
+      </div>
+    </div>
+
+    <div class="case-card">
+      <div class="cc-header">
+        <div class="cc-industry">🏗️ Construcción</div>
+        <div class="cc-company">Constructora DelNorte</div>
+        <div class="cc-desc">Empresa constructora que maneja contratos, planos y permisos en múltiples obras simultáneas.</div>
+      </div>
+      <div class="cc-metrics">
+        <div class="cc-metric"><div class="cc-metric-num">60%</div><div class="cc-metric-label">Menos retrasos por documentos</div></div>
+        <div class="cc-metric"><div class="cc-metric-num">15+</div><div class="cc-metric-label">Obras gestionadas sin papel</div></div>
+      </div>
+      <div class="cc-quote"><p>"Antes cada obra era un caos de folders. Ahora el equipo de campo firma desde el celular y los permisos están siempre a mano. Increíble."</p></div>
+      <div class="cc-author">
+        <div class="cc-avatar">AP</div>
+        <div><div class="cc-author-name">Arq. Pedro Alonzo</div><div class="cc-author-role">Director de Proyectos</div></div>
+      </div>
+    </div>
+
+    <div class="case-card">
+      <div class="cc-header">
+        <div class="cc-industry">🎓 Educación</div>
+        <div class="cc-company">Instituto Académico Caribeño</div>
+        <div class="cc-desc">Centro educativo privado con 1,200 estudiantes y procesos administrativos 100% en papel.</div>
+      </div>
+      <div class="cc-metrics">
+        <div class="cc-metric"><div class="cc-metric-num">80%</div><div class="cc-metric-label">Procesos administrativos digitales</div></div>
+        <div class="cc-metric"><div class="cc-metric-num">$6K</div><div class="cc-metric-label">Ahorro semestral comprobado</div></div>
+      </div>
+      <div class="cc-quote"><p>"Desde matrículas hasta certificados de notas: todo digital. Los padres firman desde su teléfono. El colegio por fin opera como una institución moderna."</p></div>
+      <div class="cc-author">
+        <div class="cc-avatar">MT</div>
+        <div><div class="cc-author-name">Marta Tavares</div><div class="cc-author-role">Directora Administrativa</div></div>
+      </div>
+    </div>
+
+    <div class="case-card">
+      <div class="cc-header">
+        <div class="cc-industry">🛒 Retail</div>
+        <div class="cc-company">Cadena Supermercados Fresco</div>
+        <div class="cc-desc">Cadena de 8 tiendas con proveedores, contratos y facturas físicas imposibles de controlar.</div>
+      </div>
+      <div class="cc-metrics">
+        <div class="cc-metric"><div class="cc-metric-num">200+</div><div class="cc-metric-label">Proveedores integrados digitalmente</div></div>
+        <div class="cc-metric"><div class="cc-metric-num">4x</div><div class="cc-metric-label">Más rápido procesar facturas</div></div>
+      </div>
+      <div class="cc-quote"><p>"Las facturas de 200 proveedores se procesaban en días. Ahora en horas. Y nunca más perdemos una factura ni pagamos doble por error."</p></div>
+      <div class="cc-author">
+        <div class="cc-avatar">CF</div>
+        <div><div class="cc-author-name">Carlos Ferreras</div><div class="cc-author-role">CFO</div></div>
+      </div>
+    </div>
+
+    <div class="case-card">
+      <div class="cc-header">
+        <div class="cc-industry">🏦 Finanzas</div>
+        <div class="cc-company">Cooperativa FinSol</div>
+        <div class="cc-desc">Cooperativa financiera con requerimientos estrictos de cumplimiento y auditoría documental.</div>
+      </div>
+      <div class="cc-metrics">
+        <div class="cc-metric"><div class="cc-metric-num">100%</div><div class="cc-metric-label">Auditorías aprobadas desde EcoDocs</div></div>
+        <div class="cc-metric"><div class="cc-metric-num">0</div><div class="cc-metric-label">Documentos extraviados en 2 años</div></div>
+      </div>
+      <div class="cc-quote"><p>"El regulador nos pide documentos con días de antelación. Con EcoDocs los tenemos listos en minutos. La última auditoría fue la más tranquila de nuestra historia."</p></div>
+      <div class="cc-author">
+        <div class="cc-avatar">SG</div>
+        <div><div class="cc-author-name">Sandra García</div><div class="cc-author-role">Gerente de Cumplimiento</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- INDUSTRIAS -->
+<section class="industrias">
+  <div class="section-label">Por sector</div>
+  <h2 class="section-title">EcoDocs funciona en<br>cualquier industria</h2>
+  <div class="ind-grid">
+    <div class="ind-card"><span class="ind-icon">🏢</span><span class="ind-name">Servicios financieros</span><span class="ind-count">80+ clientes</span></div>
+    <div class="ind-card"><span class="ind-icon">⚖️</span><span class="ind-name">Sector legal</span><span class="ind-count">60+ clientes</span></div>
+    <div class="ind-card"><span class="ind-icon">🏥</span><span class="ind-name">Salud</span><span class="ind-count">45+ clientes</span></div>
+    <div class="ind-card"><span class="ind-icon">🎓</span><span class="ind-name">Educación</span><span class="ind-count">55+ clientes</span></div>
+    <div class="ind-card"><span class="ind-icon">🏗️</span><span class="ind-name">Construcción</span><span class="ind-count">40+ clientes</span></div>
+    <div class="ind-card"><span class="ind-icon">🛒</span><span class="ind-name">Retail</span><span class="ind-count">70+ clientes</span></div>
+    <div class="ind-card"><span class="ind-icon">🚢</span><span class="ind-name">Logística</span><span class="ind-count">35+ clientes</span></div>
+    <div class="ind-card"><span class="ind-icon">🏨</span><span class="ind-name">Turismo & Hoteles</span><span class="ind-count">50+ clientes</span></div>
+  </div>
+</section>
+
+<!-- PROCESO IMPLEMENTACIÓN -->
+<section class="proceso">
+  <div class="section-label">Cómo lo hacemos</div>
+  <h2 class="section-title">El proceso de implementación<br>que garantiza el éxito</h2>
+  <div class="proc-grid">
+    <div class="proc-step"><div class="proc-num">01</div><div class="proc-title">Diagnóstico gratuito</div><div class="proc-desc">Analizamos tu flujo documental actual y definimos el plan de digitalización ideal para tu empresa.</div></div>
+    <div class="proc-step"><div class="proc-num">02</div><div class="proc-title">Configuración guiada</div><div class="proc-desc">Nuestro equipo configura EcoDocs según tu estructura, departamentos y necesidades específicas.</div></div>
+    <div class="proc-step"><div class="proc-num">03</div><div class="proc-title">Migración de documentos</div><div class="proc-desc">Migramos tus documentos existentes sin interrumpir tu operación. El proceso es transparente.</div></div>
+    <div class="proc-step"><div class="proc-num">04</div><div class="proc-title">Capacitación del equipo</div><div class="proc-desc">Entrenamos a tu equipo hasta que cada persona se sienta cómoda operando sin papel.</div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band">
+  <h2>¿Tu empresa podría ser<br>el próximo caso de éxito?</h2>
+  <p>Agenda una llamada con nuestro equipo y te mostramos cómo EcoDocs puede transformar tu operación específica.</p>
+  <div class="cta-btns">
+    <a href="contacto.html" class="btn-primary">Solicitar diagnóstico gratuito →</a>
+    <a href="index.html#precios" class="btn-outline">Ver planes</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="logo">Eco<span>Docs</span></a>
+      <p class="footer-desc">Digitalizamos el papel de tu empresa para que puedas enfocarte en lo que importa: crecer.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Producto</div>
+      <ul class="footer-links">
+        <li><a href="index.html#funcionalidades">Funcionalidades</a></li>
+        <li><a href="index.html#precios">Precios</a></li>
+        <li><a href="integraciones.html">Integraciones</a></li>
+        <li><a href="seguridad.html">Seguridad</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Empresa</div>
+      <ul class="footer-links">
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="casos.html">Casos de éxito</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Legal</div>
+      <ul class="footer-links">
+        <li><a href="#">Privacidad</a></li>
+        <li><a href="#">Términos de uso</a></li>
+        <li><a href="#">Cookies</a></li>
+        <li><a href="#">Cumplimiento</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 EcoDocs. Todos los derechos reservados.</span>
+    <span>🌱 Por un mundo con menos papel</span>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; } });
+  }, {threshold:0.1});
+  document.querySelectorAll('.case-card,.ind-card,.proc-step').forEach(el => {
+    el.style.opacity='0'; el.style.transform='translateY(25px)';
+    el.style.transition='opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s, background 0.3s';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>

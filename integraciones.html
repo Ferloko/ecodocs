@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoDocs — Integraciones</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep:#0d3d2a; --green-mid:#1a6645; --green-bright:#2dba72;
+    --green-light:#a8f0c6; --cream:#f5f0e8; --white:#ffffff;
+    --dark:#0a1f14; --text-muted:#6b8c79; --accent:#e8f5ee;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--green-deep);overflow-x:hidden;}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 5%;background:rgba(245,240,232,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(45,186,114,0.15);}
+  .logo{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:var(--green-deep);letter-spacing:-0.5px;text-decoration:none;}
+  .logo span{color:var(--green-bright);}
+  .nav-links{display:flex;gap:2.5rem;list-style:none;}
+  .nav-links a{text-decoration:none;color:var(--green-mid);font-weight:500;font-size:0.95rem;transition:color 0.2s;}
+  .nav-links a:hover,.nav-links a.active{color:var(--green-bright);}
+  .btn-nav{background:var(--green-deep);color:var(--white)!important;padding:0.6rem 1.4rem;border-radius:50px;}
+  .btn-nav:hover{background:var(--green-bright)!important;}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+  .page-hero{background:var(--green-deep);padding:9rem 5% 5rem;position:relative;overflow:hidden;}
+  .page-hero::before{content:'';position:absolute;bottom:-40%;right:-5%;width:600px;height:600px;background:radial-gradient(circle,rgba(45,186,114,0.12) 0%,transparent 65%);}
+  .hero-label{font-size:0.8rem;text-transform:uppercase;letter-spacing:2px;color:var(--green-bright);font-weight:500;margin-bottom:1rem;animation:fadeUp 0.5s ease both;}
+  .page-hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,4.5vw,4.5rem);font-weight:900;color:var(--white);line-height:1.1;margin-bottom:1.2rem;animation:fadeUp 0.6s 0.1s ease both;}
+  .page-hero h1 em{font-style:normal;color:var(--green-bright);}
+  .page-hero p{color:var(--green-light);font-size:1.05rem;line-height:1.7;font-weight:300;opacity:0.85;max-width:600px;animation:fadeUp 0.6s 0.2s ease both;}
+
+  .section-label{font-size:0.8rem;text-transform:uppercase;letter-spacing:2px;color:var(--green-bright);font-weight:500;margin-bottom:0.8rem;}
+  .section-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,2.5vw,2.5rem);font-weight:900;color:var(--green-deep);line-height:1.15;margin-bottom:2rem;}
+  .section-sub{color:var(--text-muted);font-size:1rem;line-height:1.7;font-weight:300;max-width:560px;margin-bottom:3rem;}
+
+  /* FEATURED INTEGRATIONS */
+  .feat-integrations{padding:5rem 5%;background:var(--white);}
+  .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;}
+
+  .feat-card{
+    background:var(--cream);border-radius:22px;padding:2.5rem;
+    border:1px solid rgba(45,186,114,0.1);
+    transition:transform 0.3s,box-shadow 0.3s;
+    position:relative;overflow:hidden;
+  }
+  .feat-card:hover{transform:translateY(-5px);box-shadow:0 20px 55px rgba(13,61,42,0.09);}
+  .feat-card::after{content:attr(data-brand);position:absolute;right:-10px;bottom:-20px;font-size:5rem;opacity:0.06;pointer-events:none;}
+
+  .int-logo{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:1.2rem;}
+  .logo-gsuite{background:#fff0f0;}
+  .logo-ms{background:#f0f4ff;}
+  .logo-sap{background:#fff8e8;}
+  .logo-sf{background:#e8f4ff;}
+  .logo-slack{background:#f5e8ff;}
+  .logo-dropbox{background:#e8f0ff;}
+
+  .feat-card h3{font-weight:700;color:var(--green-deep);font-size:1.1rem;margin-bottom:0.4rem;}
+  .feat-card .int-type{font-size:0.78rem;text-transform:uppercase;letter-spacing:1px;color:var(--green-bright);font-weight:600;margin-bottom:0.8rem;}
+  .feat-card p{color:var(--text-muted);font-size:0.88rem;line-height:1.6;font-weight:300;margin-bottom:1.2rem;}
+  .int-badge{display:inline-block;font-size:0.72rem;font-weight:600;padding:3px 10px;border-radius:50px;}
+  .badge-native{background:#d4f4e2;color:var(--green-mid);}
+  .badge-api{background:#fff0d4;color:#a07000;}
+  .badge-coming{background:#f0f0f0;color:#888;}
+
+  /* ALL INTEGRATIONS */
+  .all-integrations{padding:5rem 5%;background:var(--cream);}
+
+  .int-filters{display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:3rem;}
+  .int-filter-btn{padding:0.45rem 1.1rem;border-radius:50px;border:1.5px solid rgba(45,186,114,0.2);background:transparent;color:var(--text-muted);font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:500;cursor:pointer;transition:all 0.2s;}
+  .int-filter-btn:hover,.int-filter-btn.active{background:var(--green-deep);color:var(--white);border-color:var(--green-deep);}
+
+  .int-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;}
+  .int-card{background:var(--white);border-radius:18px;padding:1.5rem;border:1px solid rgba(45,186,114,0.1);display:flex;align-items:center;gap:1rem;transition:all 0.25s;cursor:default;}
+  .int-card:hover{border-color:var(--green-bright);box-shadow:0 8px 30px rgba(13,61,42,0.08);transform:translateY(-2px);}
+  .int-card-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+  .int-card-name{font-weight:600;color:var(--green-deep);font-size:0.9rem;}
+  .int-card-cat{font-size:0.75rem;color:var(--text-muted);margin-top:2px;}
+
+  /* API SECTION */
+  .api-section{background:var(--green-deep);padding:5rem 5%;position:relative;overflow:hidden;}
+  .api-section::before{content:'';position:absolute;top:-30%;right:-5%;width:500px;height:500px;background:radial-gradient(circle,rgba(45,186,114,0.1) 0%,transparent 65%);}
+  .api-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+
+  .api-text .section-label{color:var(--green-light);opacity:0.7;}
+  .api-text .section-title{color:var(--white);}
+  .api-text p{color:var(--green-light);font-size:0.95rem;line-height:1.7;font-weight:300;opacity:0.85;margin-bottom:1.5rem;}
+  .api-features{display:flex;flex-direction:column;gap:0.8rem;margin-bottom:2rem;}
+  .api-feat{display:flex;align-items:center;gap:0.8rem;color:var(--green-light);font-size:0.9rem;}
+  .api-feat::before{content:'✓';color:var(--green-bright);font-weight:700;font-size:0.85rem;}
+  .btn-api{display:inline-block;background:var(--green-bright);color:var(--white);padding:0.9rem 2rem;border-radius:50px;text-decoration:none;font-weight:500;transition:all 0.25s;}
+  .btn-api:hover{background:var(--white);color:var(--green-deep);transform:translateY(-2px);}
+
+  .code-block{background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:2rem;font-family:'Courier New',monospace;font-size:0.82rem;line-height:1.7;overflow-x:auto;}
+  .code-line{display:block;}
+  .c-comment{color:#6a9955;}
+  .c-key{color:#9cdcfe;}
+  .c-val{color:#ce9178;}
+  .c-kw{color:#569cd6;}
+  .c-op{color:rgba(255,255,255,0.5);}
+  .c-fn{color:#dcdcaa;}
+  .c-str{color:#4ec9b0;}
+
+  /* COMO FUNCIONA */
+  .how-int{padding:5rem 5%;background:var(--white);}
+  .steps-row{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;margin-top:3rem;position:relative;}
+  .steps-row::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:2px;background:linear-gradient(to right,var(--green-bright),var(--green-light));z-index:0;}
+  .step-box{text-align:center;position:relative;z-index:1;}
+  .step-dot{width:56px;height:56px;background:var(--green-deep);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin:0 auto 1rem;box-shadow:0 0 0 4px var(--white),0 0 0 6px rgba(45,186,114,0.2);}
+  .step-title{font-weight:700;color:var(--green-deep);font-size:0.95rem;margin-bottom:0.4rem;}
+  .step-desc{font-size:0.83rem;color:var(--text-muted);font-weight:300;line-height:1.5;}
+
+  /* CTA */
+  .cta-band{padding:5rem 5%;background:var(--cream);text-align:center;}
+  .cta-band h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,3vw,3rem);font-weight:900;color:var(--green-deep);margin-bottom:1rem;}
+  .cta-band p{color:var(--text-muted);font-size:1rem;font-weight:300;max-width:480px;margin:0 auto 2rem;line-height:1.7;}
+  .cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn-primary{background:var(--green-deep);color:var(--white);padding:0.9rem 2.2rem;border-radius:50px;text-decoration:none;font-weight:500;font-size:1rem;transition:all 0.25s;box-shadow:0 4px 20px rgba(13,61,42,0.2);}
+  .btn-primary:hover{background:var(--green-bright);transform:translateY(-2px);}
+  .btn-outline{background:transparent;color:var(--green-deep);padding:0.9rem 2.2rem;border-radius:50px;text-decoration:none;font-weight:500;font-size:1rem;border:1.5px solid var(--green-deep);transition:all 0.25s;}
+  .btn-outline:hover{background:var(--green-deep);color:var(--white);transform:translateY(-2px);}
+
+  footer{background:var(--dark);padding:4rem 5% 2rem;}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(255,255,255,0.06);}
+  .footer-brand .logo{color:var(--white);display:block;margin-bottom:0.8rem;}
+  .footer-desc{color:rgba(255,255,255,0.4);font-size:0.9rem;line-height:1.6;font-weight:300;}
+  .footer-col-title{color:var(--green-light);font-size:0.8rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:500;margin-bottom:1rem;}
+  .footer-links{list-style:none;display:flex;flex-direction:column;gap:0.6rem;}
+  .footer-links a{color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.9rem;transition:color 0.2s;}
+  .footer-links a:hover{color:var(--green-bright);}
+  .footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:2rem;color:rgba(255,255,255,0.25);font-size:0.85rem;}
+
+  @media(max-width:900px){
+    .feat-grid{grid-template-columns:1fr}
+    .int-grid{grid-template-columns:repeat(2,1fr)}
+    .api-grid{grid-template-columns:1fr}
+    .steps-row{grid-template-columns:repeat(2,1fr)}
+    .steps-row::before{display:none}
+    .footer-grid{grid-template-columns:1fr 1fr}
+    nav .nav-links li:not(:last-child){display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Eco<span>Docs</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#como-funciona">Cómo funciona</a></li>
+    <li><a href="casos.html">Casos de éxito</a></li>
+    <li><a href="nosotros.html">Nosotros</a></li>
+    <li><a href="integraciones.html" class="active">Integraciones</a></li>
+    <li><a href="contacto.html" class="btn-nav">Contacto</a></li>
+  </ul>
+</nav>
+
+<section class="page-hero">
+  <div class="hero-label">Conecta todo tu ecosistema</div>
+  <h1>EcoDocs se conecta con las herramientas que <em>ya usas</em></h1>
+  <p>Más de 40 integraciones nativas con los ERPs, CRMs, plataformas de almacenamiento y herramientas de productividad más populares del mercado.</p>
+</section>
+
+<!-- DESTACADAS -->
+<section class="feat-integrations">
+  <div class="section-label">Más populares</div>
+  <h2 class="section-title">Integraciones destacadas</h2>
+  <div class="feat-grid">
+
+    <div class="feat-card" data-brand="G">
+      <div class="int-logo logo-gsuite">📁</div>
+      <div class="int-type">Almacenamiento & Productividad</div>
+      <h3>Google Workspace</h3>
+      <p>Sincroniza documentos con Google Drive, firma desde Google Docs y gestiona permisos integrados con tus cuentas de Google.</p>
+      <span class="int-badge badge-native">✓ Integración nativa</span>
+    </div>
+
+    <div class="feat-card" data-brand="M">
+      <div class="int-logo logo-ms">💼</div>
+      <div class="int-type">Productividad empresarial</div>
+      <h3>Microsoft 365</h3>
+      <p>Integración completa con OneDrive, Teams, SharePoint y Outlook para que tu equipo trabaje desde las herramientas que ya conoce.</p>
+      <span class="int-badge badge-native">✓ Integración nativa</span>
+    </div>
+
+    <div class="feat-card" data-brand="S">
+      <div class="int-logo logo-sap">🏭</div>
+      <div class="int-type">ERP empresarial</div>
+      <h3>SAP</h3>
+      <p>Conecta EcoDocs con SAP para gestionar facturas, órdenes de compra y contratos directamente desde tu ERP sin duplicar información.</p>
+      <span class="int-badge badge-api">API empresarial</span>
+    </div>
+
+    <div class="feat-card" data-brand="SF">
+      <div class="int-logo logo-sf">☁️</div>
+      <div class="int-type">CRM</div>
+      <h3>Salesforce</h3>
+      <p>Genera y firma contratos de ventas desde Salesforce sin salir del CRM. Documentos vinculados a cada oportunidad y cliente.</p>
+      <span class="int-badge badge-native">✓ Integración nativa</span>
+    </div>
+
+    <div class="feat-card" data-brand="Sl">
+      <div class="int-logo logo-slack">💬</div>
+      <div class="int-type">Comunicación</div>
+      <h3>Slack</h3>
+      <p>Recibe notificaciones de documentos pendientes de firma, alertas de acceso y resúmenes diarios directamente en tus canales de Slack.</p>
+      <span class="int-badge badge-native">✓ Integración nativa</span>
+    </div>
+
+    <div class="feat-card" data-brand="D">
+      <div class="int-logo logo-dropbox">📦</div>
+      <div class="int-type">Almacenamiento</div>
+      <h3>Dropbox Business</h3>
+      <p>Sincronización bidireccional con Dropbox Business para mantener todos tus documentos disponibles en ambas plataformas automáticamente.</p>
+      <span class="int-badge badge-api">API disponible</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- TODAS LAS INTEGRACIONES -->
+<section class="all-integrations">
+  <div class="section-label">Directorio completo</div>
+  <h2 class="section-title">Todas las integraciones</h2>
+
+  <div class="int-filters">
+    <button class="int-filter-btn active">Todas</button>
+    <button class="int-filter-btn">ERP</button>
+    <button class="int-filter-btn">CRM</button>
+    <button class="int-filter-btn">Almacenamiento</button>
+    <button class="int-filter-btn">Comunicación</button>
+    <button class="int-filter-btn">Contabilidad</button>
+    <button class="int-filter-btn">RRHH</button>
+  </div>
+
+  <div class="int-grid">
+    <div class="int-card"><div class="int-card-icon" style="background:#fff0f0">📁</div><div><div class="int-card-name">Google Drive</div><div class="int-card-cat">Almacenamiento</div></div></div>
+    <div class="int-card"><div class="int-card-icon" style="background:#f0f4ff">💼</div><div><div class="int-card-name">OneDrive</div><div class="int-card-cat">Almacenamiento</div></div></div>
+    <div class="int-card"><div class="int-card-icon" style="background:#e8f0ff">📦</div><div><div class="int-card-name">Dropbox</div><div class="int-card-cat">Almacenamiento</div></div></div>
+    <div class="int-card"><div class="int-card-icon" style="background:#fff8e8">📊</div><div><div class="int-card-name">SAP</div><div class="int-card-cat">ERP</div></div></div>
+    <div class="int-card"><div class="int-card-icon" style="background:#f0fff4">🔧</div><div><div class="int-card-name">Odoo</div><div class="int-card-cat">ERP</div></div></div>
+    <div class="int-card"><div class="int-card-icon" style="background:#fff0f8">🏗️</div><div><div class="int-card-name">Oracle NetSuite</div><div class="int-card-cat">ERP</div></div></div>
+    <div class="int-card"><div class="int-card-icon" style="background:#e8f4ff">☁️</div><div><div class="int-card-name">Salesforce</div><div class="int-card-cat">CRM</div></div></div>
+    <div class="int-card"><div class="int-card-icon" style="background:#fff4e8">🤝</div><div><div class="int-card-name">HubSpot</div><div class="int-card-cat">CRM</div></div></div>
+    <div class="int-card"><div class="int-card-icon" style="background:#f5e8ff">💬</div><div><div class="int-card-name">Slack</div><div class="int-card-cat">Comunicación</div></div></div>
+    <div class="int-card"><div class="int-card-icon" style="background:#e8f4ff">👥</div><div><div class="int-card-name">Microsoft Teams</div><div class="int-card-cat">Comunicación</div></div></div>
+    <div class="int-card"><div class="int-card-icon" style="background:#fff8e8">📧</div><div><div class="int-card-name">Gmail</div><div class="int-card-cat">Comunicación</div></div></div>
+    <div class="int-card"><div class="int-card-icon" style="background:#f0f4ff">📬</div><div><div class="int-card-name">Outlook</div><div class="int-card-cat">Comunicación</div></div></div>
+    <div class="int-card"><div class="int-card-icon" style="background:#e8fff4">💰</div><div><div class="int-card-name">QuickBooks</div><div class="int-card-cat">Contabilidad</div></div></div>
+    <div class="int-card"><div class="int-card-icon" style="background:#fff0e8">📈</div><div><div class="int-card-name">Xero</div><div class="int-card-cat">Contabilidad</div></div></div>
+    <div class="int-card"><div class="int-card-icon" style="background:#f4e8ff">🧾</div><div><div class="int-card-name">Alegra</div><div class="int-card-cat">Contabilidad</div></div></div>
+    <div class="int-card"><div class="int-card-icon" style="background:#e8f8ff">👤</div><div><div class="int-card-name">BambooHR</div><div class="int-card-cat">RRHH</div></div></div>
+  </div>
+</section>
+
+<!-- API -->
+<section class="api-section">
+  <div class="api-grid">
+    <div class="api-text">
+      <div class="section-label">Para desarrolladores</div>
+      <h2 class="section-title">¿No encuentras tu herramienta? Usa nuestra API.</h2>
+      <p>EcoDocs tiene una API REST completa y bien documentada para que puedas integrarte con cualquier sistema, sin importar si es legacy o moderno.</p>
+      <div class="api-features">
+        <div class="api-feat">API REST con autenticación OAuth 2.0</div>
+        <div class="api-feat">Webhooks para eventos en tiempo real</div>
+        <div class="api-feat">SDK disponible para Node.js y Python</div>
+        <div class="api-feat">Sandbox de pruebas gratuito</div>
+        <div class="api-feat">Documentación interactiva (Swagger)</div>
+        <div class="api-feat">Soporte directo al equipo de ingeniería</div>
+      </div>
+      <a href="#" class="btn-api">Ver documentación →</a>
+    </div>
+    <div class="code-block">
+      <span class="code-line"><span class="c-comment">// Subir y firmar un documento con EcoDocs API</span></span>
+      <span class="code-line"></span>
+      <span class="code-line"><span class="c-kw">const</span> <span class="c-key">ecodocs</span> <span class="c-op">= new</span> <span class="c-fn">EcoDocsClient</span><span class="c-op">({</span></span>
+      <span class="code-line">  <span class="c-key">apiKey</span><span class="c-op">:</span> <span class="c-val">'ed_live_xxxxxxxxxxxx'</span></span>
+      <span class="code-line"><span class="c-op">});</span></span>
+      <span class="code-line"></span>
+      <span class="code-line"><span class="c-comment">// Crear documento</span></span>
+      <span class="code-line"><span class="c-kw">const</span> <span class="c-key">doc</span> <span class="c-op">= await</span> ecodocs.<span class="c-fn">documents</span>.<span class="c-fn">create</span><span class="c-op">({</span></span>
+      <span class="code-line">  <span class="c-key">title</span><span class="c-op">:</span> <span class="c-val">'Contrato de servicio'</span><span class="c-op">,</span></span>
+      <span class="code-line">  <span class="c-key">file</span><span class="c-op">:</span> <span class="c-str">fileBuffer</span><span class="c-op">,</span></span>
+      <span class="code-line">  <span class="c-key">folder</span><span class="c-op">:</span> <span class="c-val">'contratos/2026'</span></span>
+      <span class="code-line"><span class="c-op">});</span></span>
+      <span class="code-line"></span>
+      <span class="code-line"><span class="c-comment">// Solicitar firma electrónica</span></span>
+      <span class="code-line"><span class="c-kw">const</span> <span class="c-key">request</span> <span class="c-op">= await</span> ecodocs.<span class="c-fn">signatures</span>.<span class="c-fn">request</span><span class="c-op">({</span></span>
+      <span class="code-line">  <span class="c-key">documentId</span><span class="c-op">:</span> <span class="c-str">doc.id</span><span class="c-op">,</span></span>
+      <span class="code-line">  <span class="c-key">signers</span><span class="c-op">: [{</span></span>
+      <span class="code-line">    <span class="c-key">email</span><span class="c-op">:</span> <span class="c-val">'cliente@empresa.com'</span><span class="c-op">,</span></span>
+      <span class="code-line">    <span class="c-key">name</span><span class="c-op">:</span> <span class="c-val">'Juan Pérez'</span></span>
+      <span class="code-line">  <span class="c-op">}]</span></span>
+      <span class="code-line"><span class="c-op">});</span></span>
+      <span class="code-line"></span>
+      <span class="code-line"><span class="c-comment">// ✓ Firma enviada — doc.id: doc_a1b2c3d4</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section class="how-int">
+  <div style="text-align:center">
+    <div class="section-label">Proceso</div>
+    <h2 class="section-title">Conectar EcoDocs es cuestión de minutos</h2>
+  </div>
+  <div class="steps-row">
+    <div class="step-box"><div class="step-dot">🔍</div><div class="step-title">Elige tu integración</div><div class="step-desc">Busca en nuestro directorio la herramienta que ya usas o conecta por API.</div></div>
+    <div class="step-box"><div class="step-dot">🔑</div><div class="step-title">Autoriza el acceso</div><div class="step-desc">Login con OAuth seguro. Sin contraseñas ni acceso a datos no necesarios.</div></div>
+    <div class="step-box"><div class="step-dot">⚙️</div><div class="step-title">Configura el flujo</div><div class="step-desc">Define qué documentos sincronizar, carpetas y acciones automáticas.</div></div>
+    <div class="step-box"><div class="step-dot">🚀</div><div class="step-title">Listo para usar</div><div class="step-desc">Todo sincronizado en tiempo real. Sin intervención manual ni duplicados.</div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band">
+  <h2>¿Necesitas una integración<br>que no está aquí?</h2>
+  <p>Cuéntanos qué herramienta usas y lo evaluamos. Priorizamos integraciones basadas en la demanda de nuestros clientes.</p>
+  <div class="cta-btns">
+    <a href="contacto.html" class="btn-primary">Solicitar integración →</a>
+    <a href="#" class="btn-outline">Ver documentación API</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="logo">Eco<span>Docs</span></a>
+      <p class="footer-desc">Digitalizamos el papel de tu empresa para que puedas enfocarte en lo que importa: crecer.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Producto</div>
+      <ul class="footer-links">
+        <li><a href="index.html#funcionalidades">Funcionalidades</a></li>
+        <li><a href="index.html#precios">Precios</a></li>
+        <li><a href="integraciones.html">Integraciones</a></li>
+        <li><a href="seguridad.html">Seguridad</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Empresa</div>
+      <ul class="footer-links">
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="casos.html">Casos de éxito</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Legal</div>
+      <ul class="footer-links">
+        <li><a href="#">Privacidad</a></li>
+        <li><a href="#">Términos de uso</a></li>
+        <li><a href="#">Cookies</a></li>
+        <li><a href="#">Cumplimiento</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 EcoDocs. Todos los derechos reservados.</span>
+    <span>🌱 Por un mundo con menos papel</span>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.int-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.int-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; } });
+  }, {threshold:0.1});
+  document.querySelectorAll('.feat-card,.int-card,.step-box').forEach(el => {
+    el.style.opacity='0'; el.style.transform='translateY(20px)';
+    el.style.transition='opacity 0.4s ease, transform 0.4s ease, box-shadow 0.3s, border-color 0.2s, background 0.3s';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
