@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Cliente | EcoDocs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green-deep: #0d3d2a;
+      --green-mid: #1a6645;
+      --green-bright: #2dba72;
+      --green-light: #a8f0c6;
+      --white: #ffffff;
+      --text-muted: #6b8c79;
+      --accent: #e8f5ee;
+      --shadow: 0 10px 28px rgba(13,61,42,0.07);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: var(--green-deep);
+      background: linear-gradient(160deg, #eff8f3 0%, #f6f2e9 58%, #f9f7f0 100%);
+      min-height: 100vh;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid rgba(45,186,114,0.15);
+      background: rgba(245,240,232,0.92);
+      backdrop-filter: blur(10px);
+    }
+    .top-left {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .menu-toggle {
+      border: 1px solid rgba(45,186,114,0.25);
+      background: var(--white);
+      color: var(--green-mid);
+      border-radius: 8px;
+      padding: 0.35rem 0.55rem;
+      cursor: pointer;
+      display: none;
+    }
+    .logo {
+      text-decoration: none;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--green-deep);
+      line-height: 1;
+    }
+    .logo span { color: var(--green-bright); }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .pill {
+      font-size: 0.8rem;
+      background: var(--white);
+      border: 1px solid rgba(45,186,114,0.25);
+      border-radius: 999px;
+      padding: 0.35rem 0.72rem;
+      color: var(--green-mid);
+      max-width: 260px;
+      overflow-wrap: anywhere;
+    }
+    .btn-link {
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: var(--green-deep);
+      color: var(--white);
+      border-radius: 999px;
+      padding: 0.42rem 0.9rem;
+    }
+    .btn-link:hover { background: var(--green-bright); }
+
+    .app-shell {
+      width: min(1280px, 100%);
+      margin: 0 auto;
+      padding: 0.85rem;
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 0.85rem;
+      position: relative;
+    }
+
+    .sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10,31,20,0.45);
+      z-index: 30;
+      display: none;
+    }
+    .sidebar-overlay.show { display: block; }
+
+    .sidebar {
+      background: var(--white);
+      border: 1px solid rgba(45,186,114,0.15);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 1rem;
+      height: fit-content;
+      position: sticky;
+      top: 4.8rem;
+      z-index: 35;
+    }
+    .sidebar-title {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.8rem;
+    }
+    .nav-list {
+      list-style: none;
+      display: grid;
+      gap: 0.45rem;
+    }
+    .nav-btn {
+      width: 100%;
+      text-align: left;
+      border: 1px solid rgba(45,186,114,0.18);
+      border-radius: 10px;
+      background: var(--white);
+      color: var(--green-mid);
+      padding: 0.55rem 0.7rem;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover {
+      border-color: var(--green-bright);
+      transform: translateY(-1px);
+    }
+    .nav-btn.active {
+      background: var(--green-deep);
+      color: var(--white);
+      border-color: var(--green-deep);
+    }
+
+    .side-box {
+      margin-top: 1rem;
+      border-radius: 10px;
+      background: var(--accent);
+      border: 1px solid rgba(45,186,114,0.2);
+      padding: 0.7rem;
+      font-size: 0.8rem;
+      color: var(--green-mid);
+      line-height: 1.4;
+    }
+
+    .content {
+      min-width: 0;
+    }
+    .content-header {
+      margin-bottom: 0.8rem;
+      background: var(--white);
+      border: 1px solid rgba(45,186,114,0.15);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 1rem;
+    }
+    .content-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 4.8vw, 2.4rem);
+      line-height: 1.1;
+      margin-bottom: 0.3rem;
+    }
+    .content-subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .top-tabs {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+    .top-tab {
+      border: 1px solid rgba(45,186,114,0.2);
+      background: var(--white);
+      color: var(--green-mid);
+      border-radius: 999px;
+      padding: 0.3rem 0.7rem;
+      font-size: 0.77rem;
+      cursor: pointer;
+    }
+    .top-tab.active {
+      background: var(--green-deep);
+      border-color: var(--green-deep);
+      color: var(--white);
+    }
+
+    .view { display: none; }
+    .view.active { display: block; }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.7rem;
+      margin-bottom: 0.8rem;
+    }
+    .kpi {
+      background: var(--white);
+      border: 1px solid rgba(45,186,114,0.15);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 0.9rem;
+    }
+    .kpi-label { color: var(--text-muted); font-size: 0.77rem; }
+    .kpi-value {
+      margin-top: 0.35rem;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 4.5vw, 1.9rem);
+      line-height: 1;
+    }
+    .kpi-note { margin-top: 0.33rem; font-size: 0.74rem; color: var(--green-mid); }
+
+    .grid {
+      display: grid;
+      gap: 0.7rem;
+    }
+    .grid.two { grid-template-columns: 2fr 1fr; }
+    .grid.equal { grid-template-columns: 1fr 1fr; }
+    .panel {
+      background: var(--white);
+      border: 1px solid rgba(45,186,114,0.15);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 0.95rem;
+      min-width: 0;
+    }
+    .panel h3 {
+      margin-bottom: 0.65rem;
+      font-size: 1rem;
+    }
+    .panel-desc {
+      color: var(--text-muted);
+      font-size: 0.86rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.55rem;
+    }
+    .btn {
+      border: 1px solid rgba(45,186,114,0.2);
+      background: var(--white);
+      color: var(--green-mid);
+      border-radius: 999px;
+      padding: 0.4rem 0.75rem;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-family: inherit;
+    }
+    .btn:hover { border-color: var(--green-bright); }
+    .btn.primary {
+      background: var(--green-deep);
+      border-color: var(--green-deep);
+      color: var(--white);
+    }
+    .btn.primary:hover {
+      background: var(--green-bright);
+      border-color: var(--green-bright);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    table {
+      width: 100%;
+      min-width: 560px;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.58rem 0.2rem;
+      border-bottom: 1px solid rgba(45,186,114,0.13);
+      color: var(--green-mid);
+    }
+    th {
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+    .status {
+      display: inline-flex;
+      border-radius: 999px;
+      padding: 0.13rem 0.45rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+    .status.ok { background: #d4f4e2; color: #13663f; }
+    .status.wait { background: #fef3d4; color: #916500; }
+
+    .list {
+      list-style: none;
+      display: grid;
+      gap: 0.55rem;
+    }
+    .list li {
+      border: 1px solid rgba(45,186,114,0.2);
+      border-radius: 10px;
+      padding: 0.58rem 0.65rem;
+      color: var(--green-mid);
+      font-size: 0.82rem;
+      line-height: 1.35;
+      background: var(--white);
+    }
+    .list small {
+      display: block;
+      color: var(--text-muted);
+      margin-top: 0.16rem;
+      font-size: 0.72rem;
+    }
+    .timeline li {
+      background: var(--accent);
+      border-color: rgba(45,186,114,0.1);
+    }
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 0.6rem;
+    }
+    .app-card {
+      border: 1px solid rgba(45,186,114,0.2);
+      border-radius: 10px;
+      background: var(--white);
+      padding: 0.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.38rem;
+      min-height: 96px;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .app-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--green-bright);
+      box-shadow: var(--shadow);
+    }
+    .app-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: var(--accent);
+      border: 1px solid rgba(45,186,114,0.2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.92rem;
+    }
+    .app-name {
+      color: var(--green-deep);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .app-meta {
+      color: var(--text-muted);
+      font-size: 0.72rem;
+    }
+    .price-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 0.65rem;
+    }
+    .price-card {
+      border: 1px solid rgba(45,186,114,0.2);
+      border-radius: 12px;
+      padding: 0.8rem;
+      background: var(--white);
+    }
+    .price-card.featured {
+      background: var(--green-deep);
+      color: var(--white);
+      border-color: var(--green-deep);
+    }
+    .price-name {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+    }
+    .price-card.featured .price-name { color: var(--green-light); }
+    .price-value {
+      margin-top: 0.4rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      line-height: 1;
+    }
+    .price-small { font-size: 0.75rem; margin-top: 0.35rem; }
+    .price-card.featured .btn { background: var(--white); color: var(--green-deep); border-color: var(--white); }
+    .industry-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+      gap: 0.6rem;
+    }
+    .industry {
+      border: 1px solid rgba(45,186,114,0.2);
+      border-radius: 10px;
+      padding: 0.7rem;
+      background: var(--white);
+      font-size: 0.82rem;
+      color: var(--green-mid);
+    }
+    .faq-item {
+      border: 1px solid rgba(45,186,114,0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+      background: var(--white);
+    }
+    .faq-q {
+      width: 100%;
+      border: none;
+      background: transparent;
+      text-align: left;
+      padding: 0.65rem 0.75rem;
+      color: var(--green-deep);
+      font-weight: 600;
+      font-size: 0.83rem;
+      cursor: pointer;
+    }
+    .faq-a {
+      display: none;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      line-height: 1.4;
+      padding: 0 0.75rem 0.68rem;
+    }
+    .faq-item.open .faq-a { display: block; }
+    .chart-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 0.7rem;
+      margin-top: 0.7rem;
+    }
+    .chart-panel {
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+    }
+    .chart-wrap {
+      position: relative;
+      flex: 1;
+      min-height: 220px;
+    }
+
+    .signature-card {
+      border: 1px solid rgba(45,186,114,0.2);
+      border-radius: 10px;
+      padding: 0.7rem;
+      margin-bottom: 0.6rem;
+    }
+    .signature-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.6rem;
+      align-items: center;
+      margin-bottom: 0.35rem;
+      flex-wrap: wrap;
+    }
+    .signature-name {
+      font-size: 0.88rem;
+      color: var(--green-deep);
+      font-weight: 600;
+    }
+    .signature-meta {
+      color: var(--text-muted);
+      font-size: 0.76rem;
+    }
+
+    .input,
+    .textarea,
+    .select {
+      width: 100%;
+      border: 1px solid rgba(45,186,114,0.25);
+      border-radius: 9px;
+      padding: 0.55rem 0.65rem;
+      font-family: inherit;
+      font-size: 0.84rem;
+      color: var(--green-deep);
+      background: var(--white);
+    }
+    .textarea {
+      resize: vertical;
+      min-height: 84px;
+    }
+
+    .field {
+      margin-bottom: 0.5rem;
+    }
+    .label {
+      font-size: 0.76rem;
+      color: var(--green-mid);
+      display: block;
+      margin-bottom: 0.2rem;
+      font-weight: 600;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      padding: 0.8rem;
+      border: 1px dashed rgba(45,186,114,0.25);
+      border-radius: 8px;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    .toast {
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      background: var(--green-deep);
+      color: var(--white);
+      font-size: 0.82rem;
+      padding: 0.62rem 0.85rem;
+      border-radius: 8px;
+      box-shadow: 0 10px 28px rgba(13,61,42,0.25);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: 0.25s ease;
+      z-index: 50;
+      max-width: 320px;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 950px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+        padding: 0.7rem;
+      }
+      .menu-toggle { display: inline-flex; }
+      .sidebar {
+        position: fixed;
+        top: 4rem;
+        left: 0.7rem;
+        width: min(82vw, 280px);
+        transform: translateX(-120%);
+        transition: transform 0.25s ease;
+      }
+      .sidebar.open { transform: translateX(0); }
+      .grid.two,
+      .grid.equal {
+        grid-template-columns: 1fr;
+      }
+      .chart-grid { grid-template-columns: 1fr; }
+      .pill { max-width: 220px; }
+    }
+
+    @media (max-width: 560px) {
+      .topbar { padding: 0.75rem 0.7rem; }
+      .top-actions { width: 100%; }
+      .pill { max-width: none; width: 100%; }
+      .btn-link { width: fit-content; }
+      .kpis { grid-template-columns: 1fr 1fr; }
+      table { min-width: 500px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="top-left">
+      <button class="menu-toggle" id="menu-toggle" type="button">Menu</button>
+      <a class="logo" href="index.html">Eco<span>Docs</span></a>
+    </div>
+    <div class="top-actions">
+      <span class="pill">Sesion de: <strong id="client-label">cliente</strong></span>
+      <a class="btn-link" href="portal-cliente.html">Cerrar sesion</a>
+    </div>
+  </header>
+
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <main class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <p class="sidebar-title">Navegacion</p>
+      <ul class="nav-list">
+        <li><button class="nav-btn active" data-view-switch="inicio" type="button">Resumen</button></li>
+        <li><button class="nav-btn" data-view-switch="aplicaciones" type="button">Aplicaciones</button></li>
+        <li><button class="nav-btn" data-view-switch="documentos" type="button">Documentos</button></li>
+        <li><button class="nav-btn" data-view-switch="firmas" type="button">Firmas</button></li>
+        <li><button class="nav-btn" data-view-switch="industrias" type="button">Industrias</button></li>
+        <li><button class="nav-btn" data-view-switch="comunidad" type="button">Comunidad</button></li>
+        <li><button class="nav-btn" data-view-switch="precios" type="button">Precios</button></li>
+        <li><button class="nav-btn" data-view-switch="reportes" type="button">Reportes</button></li>
+        <li><button class="nav-btn" data-view-switch="ayuda" type="button">Ayuda</button></li>
+        <li><button class="nav-btn" data-view-switch="soporte" type="button">Soporte</button></li>
+      </ul>
+
+      <div class="side-box">
+        Simulacion interactiva: cambia de modulo y prueba botones para representar el uso real del portal cliente.
+      </div>
+    </aside>
+
+    <section class="content">
+      <header class="content-header">
+        <h1 class="content-title" id="view-title">Buen dia</h1>
+        <p class="content-subtitle" id="view-subtitle">Resumen operativo y acciones rapidas de tu cuenta.</p>
+        <div class="top-tabs">
+          <button class="top-tab" data-view-switch="aplicaciones" type="button">Aplicaciones</button>
+          <button class="top-tab" data-view-switch="industrias" type="button">Industrias</button>
+          <button class="top-tab" data-view-switch="comunidad" type="button">Comunidad</button>
+          <button class="top-tab" data-view-switch="precios" type="button">Precios</button>
+          <button class="top-tab" data-view-switch="ayuda" type="button">Ayuda</button>
+        </div>
+      </header>
+
+      <section class="view active" id="view-inicio">
+        <div class="kpis">
+          <article class="kpi">
+            <p class="kpi-label">Documentos activos</p>
+            <p class="kpi-value">286</p>
+            <p class="kpi-note">+22 esta semana</p>
+          </article>
+          <article class="kpi">
+            <p class="kpi-label">Firmas pendientes</p>
+            <p class="kpi-value" id="pending-signature-count">7</p>
+            <p class="kpi-note">2 vencen hoy</p>
+          </article>
+          <article class="kpi">
+            <p class="kpi-label">Solicitudes completadas</p>
+            <p class="kpi-value">41</p>
+            <p class="kpi-note">Promedio 4.2h</p>
+          </article>
+          <article class="kpi">
+            <p class="kpi-label">Ahorro estimado</p>
+            <p class="kpi-value">$1,540</p>
+            <p class="kpi-note">Costo de papel evitado</p>
+          </article>
+        </div>
+
+        <div class="grid two">
+          <article class="panel">
+            <h3>Actividad reciente</h3>
+            <ul class="list timeline" id="home-timeline">
+              <li>08:45 AM - Se firmo "Contrato_servicio_hotel.pdf"</li>
+              <li>Ayer - El equipo legal aprobo 3 documentos</li>
+              <li>02 mayo - Nuevo usuario anadido al area de compras</li>
+            </ul>
+          </article>
+          <article class="panel">
+            <h3>Acciones rapidas</h3>
+            <p class="panel-desc">Botones de demo para simular acciones comunes del cliente.</p>
+            <div class="button-row">
+              <button class="btn primary sim-action" data-message="Documento cargado a revision." type="button">Subir documento</button>
+              <button class="btn sim-action" data-message="Recordatorio enviado al firmante." type="button">Enviar recordatorio</button>
+              <button class="btn sim-action" data-message="Se compartio enlace seguro con el cliente." type="button">Compartir carpeta</button>
+            </div>
+          </article>
+        </div>
+
+        <div class="chart-grid">
+          <article class="panel chart-panel">
+            <h3>Rendimiento mensual</h3>
+            <p class="panel-desc">Comparativo de carga de documentos y firmas por mes.</p>
+            <div class="chart-wrap">
+              <canvas id="monthly-chart"></canvas>
+            </div>
+          </article>
+          <article class="panel chart-panel">
+            <h3>Distribucion por modulo</h3>
+            <p class="panel-desc">Participacion operativa de los principales modulos activos.</p>
+            <div class="chart-wrap">
+              <canvas id="module-chart"></canvas>
+            </div>
+          </article>
+        </div>
+
+        <article class="panel chart-panel" style="margin-top: 0.7rem;">
+          <h3>Tendencia semanal de actividad</h3>
+          <p class="panel-desc">Evolucion de procesos completados en los ultimos 7 dias.</p>
+          <div class="chart-wrap">
+            <canvas id="trend-chart"></canvas>
+          </div>
+        </article>
+      </section>
+
+      <section class="view" id="view-aplicaciones">
+        <article class="panel">
+          <h3>Suite de aplicaciones (estilo Odoo)</h3>
+          <p class="panel-desc">Vista completa de modulos para simular un ecosistema empresarial integral.</p>
+          <div class="app-grid">
+            <a class="app-card" href="modulos/contabilidad.html"><span class="app-icon">%</span><p class="app-name">Contabilidad</p><p class="app-meta">Finanzas y reportes</p></a>
+            <a class="app-card" href="modulos/articulos.html"><span class="app-icon">#</span><p class="app-name">Articulos</p><p class="app-meta">Catalogo central</p></a>
+            <a class="app-card" href="modulos/firma-electronica.html"><span class="app-icon">~</span><p class="app-name">Firma electronica</p><p class="app-meta">Flujo de firmas</p></a>
+            <a class="app-card" href="modulos/crm.html"><span class="app-icon">*</span><p class="app-name">CRM</p><p class="app-meta">Embudo comercial</p></a>
+            <a class="app-card" href="modulos/studio.html"><span class="app-icon">X</span><p class="app-name">Studio</p><p class="app-meta">Personalizacion</p></a>
+            <a class="app-card" href="modulos/suscripciones.html"><span class="app-icon">O</span><p class="app-name">Suscripciones</p><p class="app-meta">Pagos recurrentes</p></a>
+            <a class="app-card" href="modulos/ia.html"><span class="app-icon">AI</span><p class="app-name">IA</p><p class="app-meta">Asistentes inteligentes</p></a>
+            <a class="app-card" href="modulos/punto-de-venta.html"><span class="app-icon">$</span><p class="app-name">Punto de venta</p><p class="app-meta">Ventas en tienda</p></a>
+            <a class="app-card" href="modulos/conversaciones.html"><span class="app-icon">D</span><p class="app-name">Conversaciones</p><p class="app-meta">Canales unificados</p></a>
+            <a class="app-card" href="modulos/documentos.html"><span class="app-icon">F</span><p class="app-name">Documentos</p><p class="app-meta">Gestion documental</p></a>
+            <a class="app-card" href="modulos/proyectos.html"><span class="app-icon">V</span><p class="app-name">Proyectos</p><p class="app-meta">Planificacion agile</p></a>
+            <a class="app-card" href="modulos/registro-de-horas.html"><span class="app-icon">T</span><p class="app-name">Registro de horas</p><p class="app-meta">Control de tiempo</p></a>
+            <a class="app-card" href="modulos/servicio-externo.html"><span class="app-icon">S</span><p class="app-name">Servicio externo</p><p class="app-meta">Field service</p></a>
+            <a class="app-card" href="modulos/planeacion.html"><span class="app-icon">P</span><p class="app-name">Planeacion</p><p class="app-meta">Capacidad operativa</p></a>
+            <a class="app-card" href="modulos/soporte-al-cliente.html"><span class="app-icon">+</span><p class="app-name">Soporte al cliente</p><p class="app-meta">Helpdesk</p></a>
+            <a class="app-card" href="modulos/comercio-electronico.html"><span class="app-icon">B</span><p class="app-name">Comercio electronico</p><p class="app-meta">Canal digital</p></a>
+            <a class="app-card" href="modulos/sitio-web.html"><span class="app-icon">W</span><p class="app-name">Sitio web</p><p class="app-meta">Construccion web</p></a>
+            <a class="app-card" href="modulos/marketing-por-correo.html"><span class="app-icon">@</span><p class="app-name">Marketing por correo</p><p class="app-meta">Campanas</p></a>
+            <a class="app-card" href="modulos/compras.html"><span class="app-icon">C</span><p class="app-name">Compras</p><p class="app-meta">Solicitudes y ordenes</p></a>
+            <a class="app-card" href="modulos/inventario.html"><span class="app-icon">I</span><p class="app-name">Inventario</p><p class="app-meta">Stock multialmacen</p></a>
+            <a class="app-card" href="modulos/manufactura.html"><span class="app-icon">M</span><p class="app-name">Manufactura</p><p class="app-meta">Produccion</p></a>
+            <a class="app-card" href="modulos/ventas.html"><span class="app-icon">R</span><p class="app-name">Ventas</p><p class="app-meta">Cotizaciones y pedidos</p></a>
+            <a class="app-card" href="modulos/rrhh.html"><span class="app-icon">H</span><p class="app-name">RR. HH.</p><p class="app-meta">Talento y nomina</p></a>
+            <a class="app-card" href="modulos/tablero.html"><span class="app-icon">Q</span><p class="app-name">Tablero</p><p class="app-meta">Analitica ejecutiva</p></a>
+          </div>
+          <div class="button-row">
+            <button class="btn primary sim-action" data-message="Lista completa de aplicaciones cargada." type="button">Actualizar modulos</button>
+            <button class="btn sim-action" data-message="Se habilito vista de todas las aplicaciones." type="button">Ver todo el catalogo</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="view" id="view-documentos">
+        <article class="panel">
+          <h3>Gestion de documentos</h3>
+          <p class="panel-desc">Navega entre estados para simular una vista mas completa del modulo.</p>
+          <div class="button-row">
+            <button class="btn doc-filter primary" data-filter="all" type="button">Todos</button>
+            <button class="btn doc-filter" data-filter="ok" type="button">Firmados</button>
+            <button class="btn doc-filter" data-filter="wait" type="button">Pendientes</button>
+          </div>
+          <div class="table-wrap" style="margin-top: 0.6rem;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Documento</th>
+                  <th>Tipo</th>
+                  <th>Fecha</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody id="documents-body">
+                <tr data-status="ok">
+                  <td>Contrato_servicio_hotel.pdf</td>
+                  <td>Contrato</td>
+                  <td>07 mayo</td>
+                  <td><span class="status ok">Firmado</span></td>
+                </tr>
+                <tr data-status="ok">
+                  <td>Factura_abril_1128.pdf</td>
+                  <td>Factura</td>
+                  <td>06 mayo</td>
+                  <td><span class="status ok">Aprobado</span></td>
+                </tr>
+                <tr data-status="wait">
+                  <td>Anexo_proyecto_norte.docx</td>
+                  <td>Anexo</td>
+                  <td>05 mayo</td>
+                  <td><span class="status wait">Pendiente</span></td>
+                </tr>
+                <tr data-status="wait">
+                  <td>Cotizacion_renovacion_2026.xlsx</td>
+                  <td>Cotizacion</td>
+                  <td>03 mayo</td>
+                  <td><span class="status wait">En revision</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="empty-state" id="documents-empty">No hay documentos para este filtro.</p>
+        </article>
+      </section>
+
+      <section class="view" id="view-firmas">
+        <article class="panel">
+          <h3>Solicitudes de firma</h3>
+          <div class="signature-card">
+            <div class="signature-head">
+              <p class="signature-name">Adenda_contrato_hotel.pdf</p>
+              <span class="status wait">Pendiente</span>
+            </div>
+            <p class="signature-meta">Destinatario: legal@cliente.com · Vence hoy</p>
+            <div class="button-row">
+              <button class="btn sim-action" data-message="Recordatorio reenviado al destinatario." type="button">Reenviar</button>
+              <button class="btn primary approve-signature" type="button">Aprobar ahora</button>
+            </div>
+          </div>
+          <div class="signature-card">
+            <div class="signature-head">
+              <p class="signature-name">Contrato_mantenimiento_2026.pdf</p>
+              <span class="status wait">Pendiente</span>
+            </div>
+            <p class="signature-meta">Destinatario: compras@cliente.com · Vence manana</p>
+            <div class="button-row">
+              <button class="btn sim-action" data-message="Se actualizo fecha limite de firma." type="button">Extender fecha</button>
+              <button class="btn primary approve-signature" type="button">Aprobar ahora</button>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="view" id="view-industrias">
+        <article class="panel">
+          <h3>Industrias</h3>
+          <p class="panel-desc">Demostracion de plantillas por sector, similar a la segmentacion de Odoo.</p>
+          <div class="industry-grid">
+            <div class="industry">Retail y tiendas<button class="btn industry-btn" data-name="Retail" type="button">Abrir plantilla</button></div>
+            <div class="industry">Servicios profesionales<button class="btn industry-btn" data-name="Servicios" type="button">Abrir plantilla</button></div>
+            <div class="industry">Manufactura<button class="btn industry-btn" data-name="Manufactura" type="button">Abrir plantilla</button></div>
+            <div class="industry">Salud y clinicas<button class="btn industry-btn" data-name="Salud" type="button">Abrir plantilla</button></div>
+            <div class="industry">Educacion<button class="btn industry-btn" data-name="Educacion" type="button">Abrir plantilla</button></div>
+            <div class="industry">Logistica<button class="btn industry-btn" data-name="Logistica" type="button">Abrir plantilla</button></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="view" id="view-comunidad">
+        <div class="grid equal">
+          <article class="panel">
+            <h3>Comunidad</h3>
+            <p class="panel-desc">Foros, eventos y recursos colaborativos para usuarios del sistema.</p>
+            <ul class="list timeline">
+              <li>Nueva publicacion: "Automatizaciones recomendadas para CRM"<small>hace 2 horas</small></li>
+              <li>Evento virtual: "Mejores practicas en firma digital"<small>manana, 5:00 PM</small></li>
+              <li>Guia publicada: "Implementacion de inventario en 7 dias"<small>hace 1 dia</small></li>
+            </ul>
+            <div class="button-row">
+              <button class="btn sim-action" data-message="Te uniste al foro de implementacion." type="button">Unirme al foro</button>
+              <button class="btn sim-action" data-message="Registro completado para el evento." type="button">Registrarme a evento</button>
+            </div>
+          </article>
+          <article class="panel">
+            <h3>Marketplace de modulos</h3>
+            <ul class="list">
+              <li>Conector bancario regional<small>4.8 estrellas · 1,240 descargas</small></li>
+              <li>Plantilla avanzada de facturacion<small>4.6 estrellas · 892 descargas</small></li>
+              <li>Gestor documental legal<small>4.9 estrellas · 2,140 descargas</small></li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="view-precios">
+        <article class="panel">
+          <h3>Precios</h3>
+          <p class="panel-desc">Comparativa de planes para simulacion comercial dentro del dashboard.</p>
+          <div class="price-grid">
+            <div class="price-card">
+              <p class="price-name">Basico</p>
+              <p class="price-value">$29</p>
+              <p class="price-small">Hasta 5 usuarios</p>
+              <div class="button-row"><button class="btn choose-plan" data-plan="Basico" type="button">Seleccionar</button></div>
+            </div>
+            <div class="price-card featured">
+              <p class="price-name">Profesional</p>
+              <p class="price-value">$79</p>
+              <p class="price-small">Hasta 20 usuarios</p>
+              <div class="button-row"><button class="btn choose-plan" data-plan="Profesional" type="button">Seleccionar</button></div>
+            </div>
+            <div class="price-card">
+              <p class="price-name">Empresarial</p>
+              <p class="price-value">Custom</p>
+              <p class="price-small">Usuarios ilimitados</p>
+              <div class="button-row"><button class="btn choose-plan" data-plan="Empresarial" type="button">Contactar ventas</button></div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="view" id="view-reportes">
+        <div class="grid equal">
+          <article class="panel">
+            <h3>Generador de reportes</h3>
+            <p class="panel-desc">Simula generar reportes descargables por modulo y periodo.</p>
+            <div class="field">
+              <label class="label" for="report-type">Tipo de reporte</label>
+              <select class="select" id="report-type">
+                <option value="Auditoria">Auditoria</option>
+                <option value="Documentos">Documentos</option>
+                <option value="Firmas">Firmas</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="label" for="report-period">Periodo</label>
+              <select class="select" id="report-period">
+                <option value="Ultimos 7 dias">Ultimos 7 dias</option>
+                <option value="Ultimo mes">Ultimo mes</option>
+                <option value="Ultimo trimestre">Ultimo trimestre</option>
+              </select>
+            </div>
+            <button class="btn primary" id="generate-report" type="button">Generar reporte</button>
+          </article>
+          <article class="panel">
+            <h3>Historial de reportes</h3>
+            <ul class="list" id="report-history">
+              <li>Auditoria - Ultimo mes<small>Generado: 06 mayo, 10:33 AM</small></li>
+              <li>Firmas - Ultimos 7 dias<small>Generado: 04 mayo, 04:12 PM</small></li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="view-soporte">
+        <div class="grid equal">
+          <article class="panel">
+            <h3>Crear ticket de soporte</h3>
+            <div class="field">
+              <label class="label" for="ticket-subject">Asunto</label>
+              <input class="input" id="ticket-subject" placeholder="Ej: Error al cargar documento">
+            </div>
+            <div class="field">
+              <label class="label" for="ticket-message">Descripcion</label>
+              <textarea class="textarea" id="ticket-message" placeholder="Describe la situacion para el equipo de soporte"></textarea>
+            </div>
+            <button class="btn primary" id="create-ticket" type="button">Enviar ticket</button>
+          </article>
+          <article class="panel">
+            <h3>Seguimiento</h3>
+            <ul class="list timeline" id="support-timeline">
+              <li>#4921 - Solicitud recibida por el equipo<small>Estado: En proceso</small></li>
+              <li>#4879 - Configuracion de permisos resuelta<small>Estado: Cerrado</small></li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="view-ayuda">
+        <div class="grid equal">
+          <article class="panel">
+            <h3>Centro de ayuda</h3>
+            <div class="faq-item">
+              <button class="faq-q" type="button">Como crear un nuevo usuario?</button>
+              <p class="faq-a">Ve a Ajustes > Usuarios y asigna permisos por modulo. Esta respuesta es simulada para demostracion.</p>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" type="button">Como integrar con mi ERP?</button>
+              <p class="faq-a">Usa conectores o API REST en el menu Integraciones. Se recomienda sandbox antes de pasar a produccion.</p>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" type="button">Donde reviso auditoria?</button>
+              <p class="faq-a">En el modulo Reportes puedes exportar bitacoras por usuario, fecha y tipo de accion.</p>
+            </div>
+          </article>
+          <article class="panel">
+            <h3>Asistencia guiada</h3>
+            <p class="panel-desc">Simula acciones de soporte inmediato para el usuario.</p>
+            <div class="button-row">
+              <button class="btn sim-action" data-message="Asistente virtual iniciado." type="button">Iniciar asistente</button>
+              <button class="btn sim-action" data-message="Se agendo llamada con consultor." type="button">Agendar consultoria</button>
+              <button class="btn sim-action" data-message="Se abrio base de conocimiento." type="button">Abrir base de conocimiento</button>
+            </div>
+          </article>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const cliente = params.get('cliente') || 'cliente@ecodocs.com';
+    const clienteNombre = cliente.split('@')[0].replace(/[._-]+/g, ' ').trim();
+    const clienteNombreBonito = clienteNombre
+      ? clienteNombre.replace(/\b\w/g, (letter) => letter.toUpperCase())
+      : 'Cliente';
+    const horaActual = new Date().getHours();
+    let saludo = 'Buen dia';
+    if (horaActual >= 5 && horaActual < 12) {
+      saludo = 'Buenos dias';
+    } else if (horaActual >= 12 && horaActual < 19) {
+      saludo = 'Buenas tardes';
+    } else {
+      saludo = 'Buenas noches';
+    }
+    document.getElementById('client-label').textContent = clienteNombreBonito;
+
+    const viewMeta = {
+      inicio: {
+        title: `${saludo} ${clienteNombreBonito}`,
+        subtitle: 'Resumen operativo y acciones rapidas de tu cuenta.'
+      },
+      documentos: {
+        title: 'Documentos',
+        subtitle: 'Visualiza, filtra y consulta el estado de tus archivos.'
+      },
+      firmas: {
+        title: 'Firmas',
+        subtitle: 'Gestion de solicitudes de firma y aprobaciones pendientes.'
+      },
+      reportes: {
+        title: 'Reportes',
+        subtitle: 'Genera y consulta reportes para auditoria y seguimiento.'
+      },
+      soporte: {
+        title: 'Soporte',
+        subtitle: 'Crea tickets y sigue conversaciones con el equipo EcoDocs.'
+      },
+      aplicaciones: {
+        title: 'Aplicaciones',
+        subtitle: 'Explora los modulos disponibles para operar toda tu empresa.'
+      },
+      industrias: {
+        title: 'Industrias',
+        subtitle: 'Selecciona tu sector y despliega una configuracion recomendada.'
+      },
+      comunidad: {
+        title: 'Comunidad',
+        subtitle: 'Conecta con usuarios, eventos y soluciones de la comunidad.'
+      },
+      precios: {
+        title: 'Precios',
+        subtitle: 'Compara planes y simula una decision comercial.'
+      },
+      ayuda: {
+        title: 'Ayuda',
+        subtitle: 'Resuelve dudas con respuestas guiadas y asistencia rapida.'
+      }
+    };
+
+    const navButtons = document.querySelectorAll('[data-view-switch]');
+    const views = document.querySelectorAll('.view');
+    const viewTitle = document.getElementById('view-title');
+    const viewSubtitle = document.getElementById('view-subtitle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    const menuToggle = document.getElementById('menu-toggle');
+    const toast = document.getElementById('toast');
+    let monthlyChart;
+    let moduleChart;
+    let trendChart;
+
+    let toastTimeout;
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2200);
+    }
+
+    function setView(name) {
+      if (!viewMeta[name]) return;
+      navButtons.forEach((btn) => {
+        btn.classList.toggle('active', btn.dataset.viewSwitch === name);
+      });
+      views.forEach((view) => {
+        view.classList.toggle('active', view.id === `view-${name}`);
+      });
+      viewTitle.textContent = viewMeta[name].title;
+      viewSubtitle.textContent = viewMeta[name].subtitle;
+      closeSidebar();
+      if (name === 'inicio') {
+        setTimeout(() => {
+          if (monthlyChart) monthlyChart.resize();
+          if (moduleChart) moduleChart.resize();
+          if (trendChart) trendChart.resize();
+        }, 120);
+      }
+    }
+
+    function openSidebar() {
+      sidebar.classList.add('open');
+      sidebarOverlay.classList.add('show');
+    }
+
+    function closeSidebar() {
+      sidebar.classList.remove('open');
+      sidebarOverlay.classList.remove('show');
+    }
+
+    navButtons.forEach((btn) => {
+      btn.addEventListener('click', () => setView(btn.dataset.viewSwitch));
+    });
+
+    menuToggle.addEventListener('click', () => {
+      if (sidebar.classList.contains('open')) {
+        closeSidebar();
+      } else {
+        openSidebar();
+      }
+    });
+    sidebarOverlay.addEventListener('click', closeSidebar);
+
+    // Acciones genericas de simulacion
+    document.querySelectorAll('.sim-action').forEach((button) => {
+      button.addEventListener('click', () => {
+        showToast(button.dataset.message || 'Accion simulada completada.');
+      });
+    });
+
+    // Filtros de documentos
+    const filterButtons = document.querySelectorAll('.doc-filter');
+    const documentRows = document.querySelectorAll('#documents-body tr');
+    const emptyState = document.getElementById('documents-empty');
+    filterButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        filterButtons.forEach((btn) => btn.classList.remove('primary'));
+        button.classList.add('primary');
+        const filter = button.dataset.filter;
+        let visibleCount = 0;
+        documentRows.forEach((row) => {
+          const match = filter === 'all' || row.dataset.status === filter;
+          row.style.display = match ? '' : 'none';
+          if (match) visibleCount += 1;
+        });
+        emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+      });
+    });
+
+    // Aprobacion de firmas
+    const pendingSignatureCount = document.getElementById('pending-signature-count');
+    document.querySelectorAll('.approve-signature').forEach((button) => {
+      button.addEventListener('click', () => {
+        const card = button.closest('.signature-card');
+        const status = card.querySelector('.status');
+        if (status.classList.contains('ok')) {
+          showToast('Esta firma ya esta aprobada.');
+          return;
+        }
+        status.classList.remove('wait');
+        status.classList.add('ok');
+        status.textContent = 'Aprobada';
+        button.disabled = true;
+        button.textContent = 'Aprobada';
+        const current = Number(pendingSignatureCount.textContent);
+        pendingSignatureCount.textContent = String(Math.max(current - 1, 0));
+        showToast('Firma aprobada correctamente.');
+      });
+    });
+
+    // Generar reportes
+    const reportType = document.getElementById('report-type');
+    const reportPeriod = document.getElementById('report-period');
+    const reportHistory = document.getElementById('report-history');
+    document.getElementById('generate-report').addEventListener('click', () => {
+      const now = new Date();
+      const item = document.createElement('li');
+      item.innerHTML = `${reportType.value} - ${reportPeriod.value}<small>Generado: ${now.toLocaleDateString('es-DO')} ${now.toLocaleTimeString('es-DO', { hour: '2-digit', minute: '2-digit' })}</small>`;
+      reportHistory.prepend(item);
+      showToast('Reporte generado y agregado al historial.');
+    });
+
+    // Tickets de soporte
+    const ticketSubject = document.getElementById('ticket-subject');
+    const ticketMessage = document.getElementById('ticket-message');
+    const supportTimeline = document.getElementById('support-timeline');
+    document.getElementById('create-ticket').addEventListener('click', () => {
+      const subject = ticketSubject.value.trim();
+      const message = ticketMessage.value.trim();
+      if (!subject || !message) {
+        showToast('Completa asunto y descripcion para crear el ticket.');
+        return;
+      }
+      const ticketId = Math.floor(5000 + Math.random() * 4000);
+      const item = document.createElement('li');
+      item.innerHTML = `#${ticketId} - ${subject}<small>Estado: Abierto · ${new Date().toLocaleDateString('es-DO')}</small>`;
+      supportTimeline.prepend(item);
+      ticketSubject.value = '';
+      ticketMessage.value = '';
+      showToast('Ticket enviado al equipo de soporte.');
+    });
+
+    // Graficos del dashboard
+    function initializeCharts() {
+      if (!window.Chart) {
+        showToast('No se pudo cargar libreria de graficos.');
+        return;
+      }
+
+      const commonTicks = {
+        color: '#6b8c79',
+        font: { size: 11 }
+      };
+
+      const commonGrid = {
+        color: 'rgba(13,61,42,0.08)'
+      };
+
+      const monthlyCtx = document.getElementById('monthly-chart');
+      const moduleCtx = document.getElementById('module-chart');
+      const trendCtx = document.getElementById('trend-chart');
+      if (!monthlyCtx || !moduleCtx || !trendCtx) return;
+
+      monthlyChart = new Chart(monthlyCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+          datasets: [
+            {
+              label: 'Documentos',
+              data: [120, 146, 163, 182, 201, 226],
+              backgroundColor: 'rgba(45,186,114,0.78)',
+              borderRadius: 6
+            },
+            {
+              label: 'Firmas',
+              data: [72, 80, 95, 102, 118, 137],
+              backgroundColor: 'rgba(13,61,42,0.78)',
+              borderRadius: 6
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'top', labels: { color: '#1a6645' } }
+          },
+          scales: {
+            x: { ticks: commonTicks, grid: { display: false } },
+            y: { ticks: commonTicks, grid: commonGrid, beginAtZero: true }
+          }
+        }
+      });
+
+      moduleChart = new Chart(moduleCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Documentos', 'Firmas', 'CRM', 'Ventas', 'Soporte'],
+          datasets: [{
+            data: [34, 19, 16, 18, 13],
+            backgroundColor: ['#2dba72', '#0d3d2a', '#5bcf94', '#1a6645', '#96dfb8'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '63%',
+          plugins: {
+            legend: { position: 'bottom', labels: { color: '#1a6645', boxWidth: 12 } }
+          }
+        }
+      });
+
+      trendChart = new Chart(trendCtx, {
+        type: 'line',
+        data: {
+          labels: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'],
+          datasets: [{
+            label: 'Procesos completados',
+            data: [42, 55, 49, 68, 74, 61, 79],
+            borderColor: '#0d3d2a',
+            backgroundColor: 'rgba(45,186,114,0.2)',
+            fill: true,
+            tension: 0.35,
+            pointRadius: 3,
+            pointBackgroundColor: '#2dba72'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            x: { ticks: commonTicks, grid: { display: false } },
+            y: { ticks: commonTicks, grid: commonGrid, beginAtZero: true }
+          }
+        }
+      });
+    }
+
+    // Interacciones adicionales
+    document.querySelectorAll('.industry-btn').forEach((button) => {
+      button.addEventListener('click', () => {
+        showToast(`Plantilla de industria "${button.dataset.name}" aplicada.`);
+      });
+    });
+
+    document.querySelectorAll('.choose-plan').forEach((button) => {
+      button.addEventListener('click', () => {
+        showToast(`Plan ${button.dataset.plan} seleccionado para simulacion.`);
+      });
+    });
+
+    document.querySelectorAll('.faq-q').forEach((button) => {
+      button.addEventListener('click', () => {
+        const parent = button.parentElement;
+        const wasOpen = parent.classList.contains('open');
+        document.querySelectorAll('.faq-item.open').forEach((item) => item.classList.remove('open'));
+        if (!wasOpen) parent.classList.add('open');
+      });
+    });
+
+    setView('inicio');
+    initializeCharts();
+  </script>
+</body>
+</html>
