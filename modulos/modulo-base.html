@@ -10,6 +10,8 @@
       --green-deep: #0d3d2a;
       --green-mid: #1a6645;
       --green-bright: #2dba72;
+      --emerald-deep: #0b2f22;
+      --emerald-mid: #144c37;
       --white: #ffffff;
       --text-muted: #6b8c79;
       --accent: #e8f5ee;
@@ -21,6 +23,32 @@
       color: var(--green-deep);
       background: linear-gradient(160deg, #eff8f3 0%, var(--bg) 58%, #f9f7f0 100%);
       min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+    .bg-orb {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.55;
+      animation: orbFloat 11s ease-in-out infinite;
+      filter: blur(2px);
+    }
+    .orb-a {
+      width: 290px;
+      height: 290px;
+      left: -100px;
+      top: -90px;
+      background: radial-gradient(circle, rgba(45,186,114,0.28) 0%, rgba(45,186,114,0.02) 70%);
+    }
+    .orb-b {
+      width: 260px;
+      height: 260px;
+      right: -90px;
+      top: 100px;
+      background: radial-gradient(circle, rgba(13,61,42,0.2) 0%, rgba(13,61,42,0.02) 72%);
+      animation-delay: 1.5s;
     }
     .topbar {
       display: flex;
@@ -33,6 +61,7 @@
       position: sticky;
       top: 0;
       z-index: 20;
+      backdrop-filter: blur(10px);
     }
     .logo {
       font-family: 'Playfair Display', serif;
@@ -46,6 +75,15 @@
       display: flex;
       gap: 0.5rem;
       flex-wrap: wrap;
+      align-items: center;
+    }
+    .clock-pill {
+      font-size: 0.77rem;
+      border: 1px solid rgba(45,186,114,0.22);
+      border-radius: 999px;
+      padding: 0.34rem 0.62rem;
+      background: var(--white);
+      color: var(--green-mid);
     }
     .btn-link {
       text-decoration: none;
@@ -67,33 +105,86 @@
       padding: 1rem;
     }
     .hero {
-      background: var(--white);
-      border: 1px solid rgba(45,186,114,0.16);
+      background: linear-gradient(140deg, var(--emerald-deep), var(--emerald-mid) 58%, #1c6848);
+      border: 1px solid rgba(45,186,114,0.28);
       border-radius: 16px;
       padding: 1rem;
-      box-shadow: 0 10px 30px rgba(13,61,42,0.06);
+      box-shadow: 0 20px 44px rgba(13,61,42,0.2);
       margin-bottom: 0.8rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      right: -120px;
+      top: -160px;
+      background: radial-gradient(circle, rgba(168,240,198,0.26) 0%, rgba(168,240,198,0.02) 70%);
+      pointer-events: none;
     }
     .module-badge {
       display: inline-block;
       font-size: 0.75rem;
-      color: var(--green-mid);
-      border: 1px solid rgba(45,186,114,0.25);
-      background: var(--accent);
+      color: rgba(255,255,255,0.88);
+      border: 1px solid rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.08);
       padding: 0.2rem 0.55rem;
       border-radius: 999px;
       margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 1;
     }
     h1 {
       font-family: 'Playfair Display', serif;
       font-size: clamp(1.6rem, 4.4vw, 2.5rem);
       margin-bottom: 0.35rem;
       line-height: 1.1;
+      color: var(--white);
+      position: relative;
+      z-index: 1;
     }
     .subtitle {
-      color: var(--text-muted);
+      color: rgba(168,240,198,0.92);
       font-size: 0.92rem;
       line-height: 1.5;
+      position: relative;
+      z-index: 1;
+      max-width: 74ch;
+    }
+    .hero-tools {
+      margin-top: 0.7rem;
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 0.5rem;
+      position: relative;
+      z-index: 1;
+      align-items: center;
+    }
+    .module-select {
+      border: 1px solid rgba(255,255,255,0.32);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.12);
+      color: var(--white);
+      padding: 0.5rem 0.6rem;
+      font-size: 0.83rem;
+      font-family: inherit;
+      width: 100%;
+    }
+    .module-select option {
+      color: var(--green-deep);
+      background: var(--white);
+    }
+    .hero-chip {
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.92);
+      background: rgba(255,255,255,0.08);
+      padding: 0.28rem 0.62rem;
+      font-size: 0.72rem;
+      white-space: nowrap;
     }
     .kpi-grid {
       margin-top: 0.8rem;
@@ -102,10 +193,21 @@
       gap: 0.6rem;
     }
     .kpi {
-      background: var(--accent);
-      border: 1px solid rgba(45,186,114,0.2);
+      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(242,250,246,0.92));
+      border: 1px solid rgba(45,186,114,0.24);
       border-radius: 10px;
       padding: 0.65rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--green-bright), rgba(45,186,114,0.2));
     }
     .kpi p:first-child { font-size: 0.75rem; color: var(--text-muted); }
     .kpi p:last-child { font-size: 1.1rem; color: var(--green-deep); font-weight: 700; margin-top: 0.2rem; }
@@ -116,11 +218,12 @@
       gap: 0.7rem;
     }
     .panel {
-      background: var(--white);
-      border: 1px solid rgba(45,186,114,0.15);
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(45,186,114,0.2);
       border-radius: 12px;
       padding: 0.9rem;
-      box-shadow: 0 8px 24px rgba(13,61,42,0.05);
+      box-shadow: 0 12px 30px rgba(13,61,42,0.09);
       min-width: 0;
     }
     .panel h2 { font-size: 1rem; margin-bottom: 0.55rem; }
@@ -133,6 +236,18 @@
       font-size: 0.82rem;
       color: var(--green-mid);
       background: var(--white);
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+    .list li:hover {
+      transform: translateY(-1px);
+      border-color: var(--green-bright);
+    }
+    .list li.done {
+      background: #f2faf5;
+      border-color: rgba(45,186,114,0.35);
+      text-decoration: line-through;
+      color: #4d7d66;
     }
     .button-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.55rem; }
     .btn {
@@ -144,11 +259,39 @@
       cursor: pointer;
       font-size: 0.78rem;
       font-family: inherit;
+      transition: all 0.2s ease;
+    }
+    .btn:hover {
+      border-color: var(--green-bright);
+      transform: translateY(-1px);
     }
     .btn.primary {
-      background: var(--green-deep);
+      background: linear-gradient(135deg, var(--green-deep), #1f6f4c);
       color: var(--white);
       border-color: var(--green-deep);
+    }
+    .live-log {
+      margin-top: 0.6rem;
+      border-top: 1px dashed rgba(45,186,114,0.25);
+      padding-top: 0.55rem;
+      display: grid;
+      gap: 0.4rem;
+      max-height: 200px;
+      overflow: auto;
+    }
+    .live-item {
+      border: 1px solid rgba(45,186,114,0.2);
+      border-radius: 8px;
+      padding: 0.42rem 0.52rem;
+      background: var(--white);
+      color: var(--green-mid);
+      font-size: 0.75rem;
+      line-height: 1.35;
+    }
+    .live-item small {
+      display: block;
+      color: var(--text-muted);
+      margin-top: 0.1rem;
     }
     .toast {
       position: fixed;
@@ -166,15 +309,24 @@
     }
     .toast.show { opacity: 1; transform: translateY(0); }
 
+    @keyframes orbFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(14px); }
+    }
+
     @media (max-width: 860px) {
       .grid { grid-template-columns: 1fr; }
+      .hero-tools { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
+  <div class="bg-orb orb-a"></div>
+  <div class="bg-orb orb-b"></div>
   <header class="topbar">
     <a class="logo" href="../index.html">Eco<span>Docs</span></a>
     <div class="top-actions">
+      <span class="clock-pill" id="module-clock">--:--</span>
       <a class="btn-link" href="../dashboard-cliente.html#aplicaciones">Volver al dashboard</a>
       <a class="btn-link primary" href="../portal-cliente.html">Cerrar sesion</a>
     </div>
@@ -185,6 +337,11 @@
       <span class="module-badge" id="module-badge">Modulo</span>
       <h1 id="module-title">Modulo</h1>
       <p class="subtitle" id="module-subtitle">Gestion integral del modulo con flujos simulados para demo.</p>
+      <div class="hero-tools">
+        <select class="module-select" id="module-select"></select>
+        <span class="hero-chip" id="module-status-chip">Estado: Operativo</span>
+        <button class="btn" id="toggle-live" type="button">Pausar flujo en vivo</button>
+      </div>
       <div class="kpi-grid">
         <div class="kpi"><p>Registros activos</p><p id="kpi-one">0</p></div>
         <div class="kpi"><p>En proceso</p><p id="kpi-two">0</p></div>
@@ -196,6 +353,7 @@
       <article class="panel">
         <h2>Flujo del modulo</h2>
         <p id="flow-description">Simulacion de operaciones para este modulo.</p>
+        <p style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.45rem">Haz clic en un paso para marcarlo como completado.</p>
         <ul class="list" id="flow-list"></ul>
       </article>
       <article class="panel">
@@ -209,6 +367,10 @@
         <div class="button-row">
           <button class="btn sim-action" type="button">Enviar alerta</button>
           <button class="btn sim-action" type="button">Asignar responsable</button>
+        </div>
+        <div class="live-log" id="live-log">
+          <div class="live-item">Pipeline del modulo iniciado.<small>Ahora</small></div>
+          <div class="live-item">Validaciones de datos completadas.<small>Hace 1 min</small></div>
         </div>
       </article>
     </section>
@@ -247,6 +409,18 @@
     const params = new URLSearchParams(window.location.search);
     const mod = params.get('mod') || 'documentos';
     const current = modules[mod] || modules.documentos;
+    const moduleSelect = document.getElementById('module-select');
+    const moduleStatusChip = document.getElementById('module-status-chip');
+    const moduleClock = document.getElementById('module-clock');
+    const toggleLive = document.getElementById('toggle-live');
+    const liveLog = document.getElementById('live-log');
+    const flowList = document.getElementById('flow-list');
+    let liveInterval;
+    let liveRunning = true;
+
+    function updateClock() {
+      moduleClock.textContent = new Date().toLocaleTimeString('es-DO', { hour: '2-digit', minute: '2-digit' });
+    }
 
     document.title = `${current[0]} | EcoDocs`;
     document.getElementById('module-badge').textContent = `Modulo ${current[0]}`;
@@ -256,11 +430,27 @@
     document.getElementById('kpi-two').textContent = current[3];
     document.getElementById('kpi-three').textContent = current[4];
     document.getElementById('flow-description').textContent = `Flujo sugerido para ${current[0].toLowerCase()} en este entorno de simulacion.`;
+    const statuses = ['Estado: Operativo', 'Estado: Monitoreo activo', 'Estado: Flujo estable'];
+    moduleStatusChip.textContent = statuses[Math.floor(Math.random() * statuses.length)];
 
-    const flowList = document.getElementById('flow-list');
+    Object.entries(modules).forEach(([key, val]) => {
+      const option = document.createElement('option');
+      option.value = key;
+      option.textContent = val[0];
+      if (key === mod) option.selected = true;
+      moduleSelect.appendChild(option);
+    });
+    moduleSelect.addEventListener('change', () => {
+      const selected = moduleSelect.value;
+      window.location.href = `modulo-base.html?mod=${encodeURIComponent(selected)}`;
+    });
+
     current[5].forEach((step) => {
       const li = document.createElement('li');
       li.textContent = step;
+      li.addEventListener('click', () => {
+        li.classList.toggle('done');
+      });
       flowList.appendChild(li);
     });
 
@@ -274,6 +464,43 @@
         timeout = setTimeout(() => toast.classList.remove('show'), 1800);
       });
     });
+
+    function pushLiveLog(message) {
+      const item = document.createElement('div');
+      item.className = 'live-item';
+      item.innerHTML = `${message}<small>${new Date().toLocaleTimeString('es-DO', { hour: '2-digit', minute: '2-digit' })}</small>`;
+      liveLog.prepend(item);
+      while (liveLog.children.length > 6) {
+        liveLog.removeChild(liveLog.lastElementChild);
+      }
+    }
+
+    function setLiveState(running) {
+      liveRunning = running;
+      clearInterval(liveInterval);
+      if (running) {
+        toggleLive.textContent = 'Pausar flujo en vivo';
+        liveInterval = setInterval(() => {
+          const events = [
+            `Nuevo evento registrado en ${current[0]}.`,
+            'Validacion automatica ejecutada.',
+            'Sincronizacion de datos completada.',
+            'Operacion en cola procesada.'
+          ];
+          pushLiveLog(events[Math.floor(Math.random() * events.length)]);
+        }, 4200);
+      } else {
+        toggleLive.textContent = 'Reanudar flujo en vivo';
+      }
+    }
+
+    toggleLive.addEventListener('click', () => {
+      setLiveState(!liveRunning);
+    });
+
+    updateClock();
+    setInterval(updateClock, 60000);
+    setLiveState(true);
   </script>
 </body>
 </html>
