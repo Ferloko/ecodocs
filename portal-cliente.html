@@ -26,6 +26,30 @@
       color: var(--green-deep);
       display: grid;
       grid-template-rows: auto 1fr;
+      overflow-x: hidden;
+    }
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.55;
+      animation: orbFloat 11s ease-in-out infinite;
+    }
+    .orb.one {
+      width: 220px;
+      height: 220px;
+      top: -70px;
+      left: -70px;
+      background: radial-gradient(circle, rgba(45,186,114,0.28) 0%, rgba(45,186,114,0.02) 70%);
+    }
+    .orb.two {
+      width: 240px;
+      height: 240px;
+      right: -90px;
+      bottom: 10%;
+      animation-delay: 2s;
+      background: radial-gradient(circle, rgba(13,61,42,0.18) 0%, rgba(13,61,42,0.02) 70%);
     }
 
     .topbar {
@@ -69,6 +93,7 @@
       border: 1px solid rgba(45,186,114,0.15);
       border-radius: 20px;
       padding: 2rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .eyebrow {
       display: inline-flex;
@@ -101,6 +126,7 @@
       box-shadow: 0 18px 42px rgba(13,61,42,0.1);
       width: min(100%, 420px);
       justify-self: end;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .card h2 {
       font-family: 'Playfair Display', serif;
@@ -161,6 +187,20 @@
     }
     button:hover { background: var(--green-bright); }
 
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @keyframes orbFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(14px); }
+    }
+
     @media (max-width: 900px) {
       .wrap {
         grid-template-columns: 1fr;
@@ -175,6 +215,8 @@
   </style>
 </head>
 <body>
+  <div class="orb one" data-parallax="-10"></div>
+  <div class="orb two" data-parallax="8"></div>
   <header class="topbar">
     <a class="logo" href="index.html">Eco<span>Docs</span></a>
     <a class="top-link" href="index.html">Volver al inicio</a>
@@ -215,6 +257,25 @@
 
     const form = document.getElementById('login-form');
     const errorMessage = document.getElementById('login-error');
+    const intro = document.querySelector('.intro');
+    const card = document.querySelector('.card');
+
+    [intro, card].forEach((el) => {
+      el.classList.add('reveal');
+      requestAnimationFrame(() => el.classList.add('in'));
+      el.addEventListener('mousemove', (event) => {
+        if (window.innerWidth < 900) return;
+        const rect = el.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const rotateY = ((event.clientX - centerX) / rect.width) * 3.6;
+        const rotateX = ((centerY - event.clientY) / rect.height) * 3.6;
+        el.style.transform = `perspective(900px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg)`;
+      });
+      el.addEventListener('mouseleave', () => {
+        el.style.transform = '';
+      });
+    });
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();
@@ -228,6 +289,14 @@
 
       errorMessage.textContent = 'Credenciales incorrectas. Prueba con el acceso demo.';
     });
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      document.querySelectorAll('[data-parallax]').forEach((el) => {
+        const speed = Number(el.dataset.parallax || 0);
+        el.style.transform = `translateY(${(scrollY * speed) / 100}px)`;
+      });
+    }, { passive: true });
   </script>
 </body>
 </html>
